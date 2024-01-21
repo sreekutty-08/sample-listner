@@ -1,11 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:listners_app/Controller/AuthController/AuthController.dart';
 import 'package:listners_app/screens/login.dart';
-
+import 'package:get/get.dart';
 import 'package:listners_app/screens/otpverify.dart';
 
-class Otppage extends StatelessWidget {
+import '../Controller/CountryController/ApiService.dart';
+import '../Controller/CountryController/CountryController.dart';
+import '../Models/countryCodeModel/CountryModel.dart';
+
+class Otppage extends StatefulWidget {
   const Otppage({super.key});
 
+  @override
+  State<Otppage> createState() => _OtppageState();
+}
+
+
+final CountryCodeController _countryCodeController = Get.put(CountryCodeController());
+final AuthController controller=Get.put(AuthController());
+Future<void> _initializeCountryData() async {
+  try {
+    List<CountryModel> countries = await ApiService().getCountries();
+    _countryCodeController.setCountries(countries);
+  } catch (error) {
+    // Handle error
+    print("Error initializing country data: $error");
+  }
+}
+
+
+class _OtppageState extends State<Otppage> {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _initializeCountryData();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,21 +97,26 @@ class Otppage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const SizedBox(
-                      width: 250,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          labelText: 'Country',
-                          suffixIcon: Icon(Icons.location_searching_rounded),
-                          labelStyle: TextStyle(fontSize: 17),
-                        ),
-                      ),
-                    ),
+                   Obx(()=> DropdownButton(
+                     value: _countryCodeController.selectedCountryCode.value,
+                     items: _countryCodeController.countries.map((country) {
+                       return DropdownMenuItem(
+                         value: country.mobileCode,
+                         child: Text("${country.name} (+${country.mobileCode})"),
+                       );
+                     }).toList(),
+                     onChanged: (value) {
+                       _countryCodeController.setSelectedCountryCode(value.toString());
+                     },
+                   ),
+                   ),
                     const SizedBox(height: 20),
-                    const SizedBox(
+                     SizedBox(
                       width: 250,
                       child: TextField(
-                        decoration: InputDecoration(
+                        keyboardType: TextInputType.phone,
+                        controller: controller.phoneController,
+                        decoration: const InputDecoration(
                           labelText: 'Mobile Number',
                           suffixIcon: Icon(Icons.phone_callback),
                           labelStyle: TextStyle(fontSize: 17),
@@ -93,13 +129,7 @@ class Otppage extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                const Otpverify(),
-                          ),
-                        );
+                      controller.fetchApi(_countryCodeController.selectedCountryCode.value);
                       },
                       child: Container(
                         alignment: Alignment.center,

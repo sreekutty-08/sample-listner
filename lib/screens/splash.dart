@@ -2,7 +2,11 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:listners_app/Controller/AuthController/AuthController.dart';
+import 'package:listners_app/screens/home.dart';
 import 'package:listners_app/screens/otppage.dart';
+import 'package:get/get.dart';
+import '../HelperFunction/HelperFunction.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -15,11 +19,35 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
+    getUserLoggedInStatus();
+    getUserId();
     Timer(const Duration(seconds: 5), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (BuildContext context) => const Otppage()),
-      );
+     Get.offAll(_isSignedIn?Home(languages: ["languages"], language: ["sss"]):Otppage());
+    });
+  }
+
+  bool _isSignedIn = false;
+  AuthController controller=Get.put(AuthController());
+
+  getUserLoggedInStatus() async {
+    await HelperFunction.getUserLoggedInStatus().then((value) {
+      if (value != null) {
+        setState(() {
+          _isSignedIn = value;
+        });
+      }
+    });
+  }
+
+  getUserId() async {
+    await HelperFunction.getUserIdFromSF().then((value) {
+      if (value != null) {
+        print(value);
+        setState(() {
+          userId = value;
+          controller.fetchDataFromApi();
+        });
+      }
     });
   }
 

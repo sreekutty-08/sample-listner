@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:listners_app/Constant.dart';
+import 'package:listners_app/Controller/AuthController/AuthController.dart';
+import 'package:listners_app/Models/current_user/current_user.dart';
 import 'package:listners_app/screens/homescreens/support.dart';
 import 'package:listners_app/screens/homescreens/coins.dart';
 import 'package:listners_app/screens/homescreens/more.dart';
@@ -20,6 +24,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AuthController controller=Get.find();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
@@ -87,25 +92,34 @@ class Home extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Row(
+                child:  Row(
                   children: [
-                    CircleAvatar(
+                    controller.currentUser.value.data![0].profileImage != null
+                        ? CircleAvatar(
+                        radius: 30,
+                        backgroundImage: NetworkImage(
+                            "$imageUrl${controller.currentUser.value.data![0].profileImage}"))
+                        : const CircleAvatar(
+                      backgroundColor: Color(0xffE6E6E6),
                       radius: 30,
-                      backgroundImage: AssetImage('assets/images/photo.jpg'),
+                      child: Icon(
+                        Icons.person,
+                        color: Color(0xffCCCCCC),
+                      ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Athira',
-                          style: TextStyle(
+                          controller.currentUser.value.data![0].name!,
+                          style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 25,
                           ),
                         ),
-                        Text(
+                        const Text(
                           'Online',
                           style: TextStyle(
                             color: Colors.green,

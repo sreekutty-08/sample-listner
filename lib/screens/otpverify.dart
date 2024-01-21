@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:listners_app/Controller/AuthController/AuthController.dart';
 import 'package:listners_app/screens/home.dart';
 
 class Otpverify extends StatelessWidget {
@@ -6,7 +8,7 @@ class Otpverify extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController otpController = TextEditingController();
+    AuthController controller=Get.find();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -71,22 +73,14 @@ class Otpverify extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           TextField(
-                            controller: otpController,
+                            controller: controller.otpController,
                             keyboardType: TextInputType.number,
                             maxLength: 4,
                           ),
                           const SizedBox(height: 20),
                           ElevatedButton(
                             onPressed: () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) => const Home(
-                                    languages: [],
-                                    language: [],
-                                  ),
-                                ),
-                              );
+                              controller.verifyOTP();
                             },
                             child: const Text('Verify OTP'),
                           ),
