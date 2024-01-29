@@ -1,10 +1,11 @@
-
 import 'dart:convert';
 
 import '../../Models/countryCodeModel/CountryModel.dart';
-import 'package:http/http.dart'as http;
+import 'package:http/http.dart' as http;
+
 class ApiService {
-  static const String apiUrl = "https://friendlytalks.in/admin/api/v1/country.php?token=c97369129e36336e71096aabf2270aba"; // Replace with your API endpoint
+  static const String apiUrl =
+      "https://friendlytalks.in/admin/api/v1/country.php?token=c97369129e36336e71096aabf2270aba"; // Replace with your API endpoint
 
   Future<List<CountryModel>> getCountries() async {
     try {
@@ -12,7 +13,8 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body)['data'];
-        List<CountryModel> countries = data.map((json) => CountryModel.fromJson(json)).toList();
+        List<CountryModel> countries =
+            data.map((json) => CountryModel.fromJson(json)).toList();
         print("countrapi success");
         return countries;
       } else {

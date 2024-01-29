@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:listners_app/Constant.dart';
 import 'package:listners_app/Controller/AuthController/AuthController.dart';
+import 'package:listners_app/Controller/CallController/CallController.dart';
 import 'package:listners_app/Models/current_user/current_user.dart';
 import 'package:listners_app/screens/homescreens/support.dart';
 import 'package:listners_app/screens/homescreens/coins.dart';
@@ -11,7 +14,7 @@ import 'package:listners_app/screens/morescreens/callhistory.dart';
 import 'package:listners_app/screens/morescreens/earnings.dart';
 import 'package:listners_app/screens/morescreens/profile.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   final List<String> languages;
 
   const Home({
@@ -20,11 +23,29 @@ class Home extends StatelessWidget {
     required List<String> language,
   });
 
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   BuildContext? get builderContext => null;
+  CallController callController = Get.put(CallController());
+  StreamController _controller = StreamController();
+  int _counter = 60;
+  late Timer _apiTimer;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _apiTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      callController.checkIncomingCalls();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    AuthController controller=Get.find();
+    AuthController controller = Get.put(AuthController());
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
@@ -92,21 +113,21 @@ class Home extends StatelessWidget {
                     ),
                   );
                 },
-                child:  Row(
+                child: Row(
                   children: [
                     controller.currentUser.value.data![0].profileImage != null
                         ? CircleAvatar(
-                        radius: 30,
-                        backgroundImage: NetworkImage(
-                            "$imageUrl${controller.currentUser.value.data![0].profileImage}"))
+                            radius: 30,
+                            backgroundImage: NetworkImage(
+                                "$imageUrl${controller.currentUser.value.data![0].profileImage}"))
                         : const CircleAvatar(
-                      backgroundColor: Color(0xffE6E6E6),
-                      radius: 30,
-                      child: Icon(
-                        Icons.person,
-                        color: Color(0xffCCCCCC),
-                      ),
-                    ),
+                            backgroundColor: Color(0xffE6E6E6),
+                            radius: 30,
+                            child: Icon(
+                              Icons.person,
+                              color: Color(0xffCCCCCC),
+                            ),
+                          ),
                     const SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

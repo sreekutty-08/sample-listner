@@ -15,9 +15,9 @@ class Otppage extends StatefulWidget {
   State<Otppage> createState() => _OtppageState();
 }
 
-
-final CountryCodeController _countryCodeController = Get.put(CountryCodeController());
-final AuthController controller=Get.put(AuthController());
+final CountryCodeController _countryCodeController =
+    Get.put(CountryCodeController());
+final AuthController controller = Get.put(AuthController());
 Future<void> _initializeCountryData() async {
   try {
     List<CountryModel> countries = await ApiService().getCountries();
@@ -28,15 +28,14 @@ Future<void> _initializeCountryData() async {
   }
 }
 
-
 class _OtppageState extends State<Otppage> {
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _initializeCountryData();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,21 +96,24 @@ class _OtppageState extends State<Otppage> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                   Obx(()=> DropdownButton(
-                     value: _countryCodeController.selectedCountryCode.value,
-                     items: _countryCodeController.countries.map((country) {
-                       return DropdownMenuItem(
-                         value: country.mobileCode,
-                         child: Text("${country.name} (+${country.mobileCode})"),
-                       );
-                     }).toList(),
-                     onChanged: (value) {
-                       _countryCodeController.setSelectedCountryCode(value.toString());
-                     },
-                   ),
-                   ),
+                    Obx(
+                      () => DropdownButton(
+                        value: _countryCodeController.selectedCountryCode.value,
+                        items: _countryCodeController.countries.map((country) {
+                          return DropdownMenuItem(
+                            value: country.mobileCode,
+                            child: Text(
+                                "${country.name} (+${country.mobileCode})"),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          _countryCodeController
+                              .setSelectedCountryCode(value.toString());
+                        },
+                      ),
+                    ),
                     const SizedBox(height: 20),
-                     SizedBox(
+                    SizedBox(
                       width: 250,
                       child: TextField(
                         keyboardType: TextInputType.phone,
@@ -129,7 +131,8 @@ class _OtppageState extends State<Otppage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                      controller.fetchApi(_countryCodeController.selectedCountryCode.value);
+                        controller.fetchApi(
+                            _countryCodeController.selectedCountryCode.value);
                       },
                       child: Container(
                         alignment: Alignment.center,

@@ -136,17 +136,12 @@ class CallHistory extends StatelessWidget {
                       // Implement delete functionality for this entry
                     },
                     onCall: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => const Calling(
-                            languages: [],
-                            language: [],
-                            personName: 'Anjali',
-                            profileImageUrl: 'assets/images/photo.jpg',
-                          ),
-                        ),
-                      );
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (BuildContext context) => const Calling(),
+                      //   ),
+                      // );
                     },
                   ),
                   _buildCallEntry(
@@ -160,17 +155,12 @@ class CallHistory extends StatelessWidget {
                       // Implement delete functionality for this entry
                     },
                     onCall: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => const Calling(
-                            languages: [],
-                            language: [],
-                            personName: 'Anjali',
-                            profileImageUrl: 'assets/images/photo.jpg',
-                          ),
-                        ),
-                      );
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (BuildContext context) => const Calling(),
+                      //   ),
+                      // );
                     },
                   ),
                   _buildCallEntry(
@@ -184,17 +174,12 @@ class CallHistory extends StatelessWidget {
                       // Implement delete functionality for this entry
                     },
                     onCall: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => const Calling(
-                            languages: [],
-                            language: [],
-                            personName: 'Anjali',
-                            profileImageUrl: 'assets/images/photo.jpg',
-                          ),
-                        ),
-                      );
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (BuildContext context) => const Calling(),
+                      //   ),
+                      // );
                     },
                   ),
                   _buildCallEntry(
@@ -208,17 +193,12 @@ class CallHistory extends StatelessWidget {
                       // Implement delete functionality for this entry
                     },
                     onCall: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => const Calling(
-                            languages: [],
-                            language: [],
-                            personName: 'Anjali',
-                            profileImageUrl: 'assets/images/photo.jpg',
-                          ),
-                        ),
-                      );
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (BuildContext context) => const Calling(),
+                      //   ),
+                      // );
                     },
                   ),
                   _buildCallEntry(
@@ -232,17 +212,12 @@ class CallHistory extends StatelessWidget {
                       // Implement delete functionality for this entry
                     },
                     onCall: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => const Calling(
-                            languages: [],
-                            language: [],
-                            personName: 'Anjali',
-                            profileImageUrl: 'assets/images/photo.jpg',
-                          ),
-                        ),
-                      );
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (BuildContext context) => const Calling(),
+                      //   ),
+                      // );
                     },
                   ),
 

@@ -8,7 +8,7 @@ class Otpverify extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AuthController controller=Get.find();
+    AuthController controller = Get.find();
 
     return Scaffold(
       body: SingleChildScrollView(

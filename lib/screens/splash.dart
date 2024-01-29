@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:listners_app/Controller/AuthController/AuthController.dart';
+import 'package:listners_app/screens/StreamDemo.dart';
 import 'package:listners_app/screens/home.dart';
 import 'package:listners_app/screens/otppage.dart';
 import 'package:get/get.dart';
@@ -22,12 +23,12 @@ class _SplashState extends State<Splash> {
     getUserLoggedInStatus();
     getUserId();
     Timer(const Duration(seconds: 5), () {
-     Get.offAll(_isSignedIn?Home(languages: ["languages"], language: ["sss"]):Otppage());
+      Get.offAll(_isSignedIn ? Home(languages: ["fd"], language:["ghj"]) : Otppage());
     });
   }
 
   bool _isSignedIn = false;
-  AuthController controller=Get.put(AuthController());
+  AuthController controller = Get.put(AuthController());
 
   getUserLoggedInStatus() async {
     await HelperFunction.getUserLoggedInStatus().then((value) {
