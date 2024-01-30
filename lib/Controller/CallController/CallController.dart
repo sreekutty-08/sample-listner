@@ -23,7 +23,7 @@ class CallController extends GetxController {
         if (hasIncomingCall && !callScreenPushed.value) {
           // Navigate to the call screen only if it hasn't been pushed already
           callScreenPushed.value = true;
-          Get.to(() => VideoCall(channelName:callModel.value.datas![0].userId!, userId: userId));
+          Get.to(() => VideoCall(channelName:callModel.value.datas![0].userId!, userId: userId,));
         } else if (!hasIncomingCall) {
           // Reset the flag if there is no incoming call
           callScreenPushed.value = false;

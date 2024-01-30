@@ -41,6 +41,8 @@ dependencies:
   shared_preferences: ^2.2.2
   agora_rtc_engine: ^5.3.1
   permission_handler: ^10.1.0
+  audioplayers: ^5.2.1
+
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +75,8 @@ flutter:
       - assets/images/photo.jpg
       - assets/images/slide.jpg
       - assets/images/whatsuplogo.png
+      - assets/Audio/feid.mp3
+      - assets/Audio/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
