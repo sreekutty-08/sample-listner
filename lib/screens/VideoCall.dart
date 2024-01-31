@@ -5,6 +5,9 @@ import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
 import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
 import 'package:get/get.dart';
+import 'package:listners_app/Controller/CallController/CallController.dart';
+import 'package:listners_app/HelperFunction/HelperFunction.dart';
+import 'package:listners_app/screens/VoiceCalling.dart';
 import 'package:listners_app/screens/home.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -12,19 +15,27 @@ import '../Constant.dart';
 
 
 class VideoCall extends StatefulWidget {
-  String channelName;
-  String userId;
-  VideoCall({super.key,required this.channelName,required this.userId,});
+  final String? personName;
+  final String? profileImageUrl;
+  final String channelName;
+  final String userId;
+  final String? progressId;
+  VideoCall({super.key,
+    required this.channelName,
+    required this.userId,
+    required this.profileImageUrl,
+    required this.progressId,
+    required this.personName});
   @override
   _VideoCallState createState() => _VideoCallState();
 }
 
 class _VideoCallState extends State<VideoCall> {
-  late RtcEngine _engine;
-  int? _remoteUid;
+
   AudioPlayer ringtonePlayer = AudioPlayer();
   bool isRinging = true;
   AudioCache cache = AudioCache();
+  CallController callController=Get.find();
 
   @override
   void initState() {
@@ -33,34 +44,6 @@ class _VideoCallState extends State<VideoCall> {
     // initializeAgora();
   }
 
-  Future<void> initializeAgora() async {
-    await [Permission.microphone, Permission.camera].request();
-    _engine = await RtcEngine.create(appId);
-    await _engine.enableAudio();
-    _engine.setEventHandler(
-      RtcEngineEventHandler(
-        joinChannelSuccess: (String channel, int uid, int elapsed) {
-          print("local user $uid joined");
-        },
-        userJoined: (int uid, int elapsed) {
-          print("remote user $uid joined");
-          setState(() {
-            _remoteUid = uid;
-          });
-        },
-        userOffline: (int uid, UserOfflineReason reason) {
-          print("remote user $uid left channel");
-          setState(() {
-            _engine.leaveChannel();
-            _engine.destroy();
-            _remoteUid = null;
-            Get.back();
-          });
-        },
-      ),
-    );
-    await _engine.joinChannel(null, widget.channelName, null, 0);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,19 +66,33 @@ class _VideoCallState extends State<VideoCall> {
                     style: TextStyle(fontSize: 20, color: Colors.black),
                   ),
                   SizedBox(height: 20),
-                  GestureDetector(
-                    onVerticalDragEnd: (details) {
-                      if (details.primaryVelocity! > 0) {
-                        _answerCall(); // Slide down to answer the call
-                      } else {
-                        _endCall(); // Slide up to reject the call
-                      }
-                    },
-                    child: Icon(
-                      Icons.arrow_downward,
-                      size: 50,
-                      color: Colors.green,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+
+                            Get.offAll(Calling(
+                              progressId: widget.progressId!,
+                                personName: widget.personName,
+                                profileImageUrl: widget.profileImageUrl,
+                                channelName: widget.channelName,
+                                userId: widget.userId));
+                                // Slide down to answer the call
+                        },
+                        child: Icon(
+                          Icons.call,
+                          size: 50,
+                          color: Colors.green,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          callController.callCut(widget.progressId);
+                        },
+                        child: Icon(Icons.call_end,size: 50,color: Colors.red,),
+                      )
+                    ],
                   ),
                 ],
               ),
@@ -108,58 +105,25 @@ class _VideoCallState extends State<VideoCall> {
               child: RtcLocalView.SurfaceView(),
             ),
           ),
-          Positioned(
-            bottom: 5,
-            left: MediaQuery.of(context).size.width / 2 - 28,
-            child: FloatingActionButton(
-              onPressed: () {
-                _endCall();
-              },
-              child: Icon(Icons.call_end, color: Colors.red),
-            ),
-          ),
         ],
       )
     );
   }
 
 
-  Widget _remoteVideo() {
-    if (_remoteUid != null) {
-      return RtcRemoteView.SurfaceView(uid: _remoteUid!, channelId: widget.channelName,);
-    } else {
-      return Text(
-        'Please wait for remote user to join',
-        textAlign: TextAlign.center,
-      );
-    }
-  }
+
 
   @override
   void dispose() {
-    _engine.leaveChannel();
-    _engine.destroy();
     super.dispose();
+    ringtonePlayer.stop();
   }
 
 
   void _playRingtone() async {
-   await ringtonePlayer.play(AssetSource("assets/Audio/feid.mp3"));
-
+   await ringtonePlayer.play(AssetSource("Audio/feid.mp3"));
   }
 
-  void _answerCall() {
-    initializeAgora();
-    ringtonePlayer.stop();
-    isRinging = false;
-    setState(() {});
-    // Add logic to answer the call
-  }
-  void _endCall(){
-    _engine.leaveChannel();
-    _engine.destroy();
-    _engine.disableAudio();
-    Get.offAll(Home(languages: ["languages"], language: ["hjk"]));
-  }
+
 }
 
