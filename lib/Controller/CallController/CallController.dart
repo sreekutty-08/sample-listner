@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:listners_app/HelperFunction/HelperFunction.dart';
 import 'package:listners_app/Models/call_model/call_model.dart';
 import 'package:listners_app/Models/user_data/user_data.dart';
-import 'package:listners_app/screens/VideoCall.dart';
+import 'package:listners_app/screens/IncomingCallScreen.dart';
 import 'package:listners_app/screens/home.dart';
 
 class CallController extends GetxController {
@@ -28,7 +28,7 @@ class CallController extends GetxController {
           callScreenPushed.value = true;
           await fetchCallerDetail(callModel.value.datas![0].userId!);
 
-          Get.to(() => VideoCall(
+          Get.to(() => InComingCallScreen(
             channelName:callModel.value.datas![0].userId!,
             userId: userId,
             profileImageUrl: userData.value.data![0].profileImage,
@@ -54,7 +54,7 @@ class CallController extends GetxController {
       var response=await http.get(Uri.parse(apiUrl));
       if(response.statusCode==200){
         Map<String, dynamic> jsonResponse = json.decode(response.body);
-        Get.offAll(Home(languages: ["languages"], language: [""]));
+        Get.offAll(Home());
         print("call cut api is successfull");
       }
     }catch(e){
@@ -72,6 +72,21 @@ class CallController extends GetxController {
 
     }catch(e){
       print("Error : $e");
+    }
+  }
+
+  Future updateOnline()async{
+    final apiUrl="https://friendlytalks.in/admin/api/v1/online-update.php?token=c97369129e36336e71096aabf2270aba&user_id=$userId";
+    try{
+      final response=await http.get(Uri.parse(apiUrl));
+      if(response.statusCode==200){
+        return "online status updated";
+      }else{
+        return "Error with : ${response.statusCode}";
+      }
+
+    }catch(e){
+      return "Error :$e";
     }
   }
 

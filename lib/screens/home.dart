@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:listners_app/Constant.dart';
 import 'package:listners_app/Controller/AuthController/AuthController.dart';
+import 'package:listners_app/Controller/AuthController/PasswordController.dart';
 import 'package:listners_app/Controller/CallController/CallController.dart';
 import 'package:listners_app/Models/current_user/current_user.dart';
 import 'package:listners_app/screens/homescreens/support.dart';
@@ -15,12 +17,10 @@ import 'package:listners_app/screens/morescreens/earnings.dart';
 import 'package:listners_app/screens/morescreens/profile.dart';
 
 class Home extends StatefulWidget {
-  final List<String> languages;
+
 
   const Home({
     super.key,
-    required this.languages,
-    required List<String> language,
   });
 
   @override
@@ -31,25 +31,39 @@ class _HomeState extends State<Home> {
   BuildContext? get builderContext => null;
   CallController callController = Get.put(CallController());
   StreamController _controller = StreamController();
+  AuthController controller = Get.find();
+  // PasswordController passwordController=Get.put(PasswordController());
   int _counter = 60;
   late Timer _apiTimer;
-
+  late Timer _timer;
   @override
-  void initState() {
+  void initState(){
     // TODO: implement initState
     super.initState();
-    _apiTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _apiTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       callController.checkIncomingCalls();
+    });
+    _timer=Timer.periodic(const Duration(seconds: 4), (timer) {
+      callController.updateOnline();
     });
   }
 
+  // userDetail(){
+  //   if(passwordController.userData.value.data?[0]==null){
+  //     return controller.currentUser.value.data?[0];
+  //   }else{
+  //   return passwordController.userData.value.data?[0];
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
-    AuthController controller = Get.put(AuthController());
+    final data=controller.currentUser.value.data?[0];
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
         child: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           elevation: 10,
           title: Center(
@@ -115,11 +129,11 @@ class _HomeState extends State<Home> {
                 },
                 child: Row(
                   children: [
-                    controller.currentUser.value.data![0].profileImage != null
+                    data!.profileImage != null
                         ? CircleAvatar(
                             radius: 30,
                             backgroundImage: NetworkImage(
-                                "$imageUrl${controller.currentUser.value.data![0].profileImage}"))
+                                "$imageUrl${data.profileImage}"))
                         : const CircleAvatar(
                             backgroundColor: Color(0xffE6E6E6),
                             radius: 30,
@@ -133,7 +147,7 @@ class _HomeState extends State<Home> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          controller.currentUser.value.data![0].name!,
+                          data!.name!,
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -251,8 +265,7 @@ class _HomeState extends State<Home> {
                 context,
                 MaterialPageRoute(
                   builder: (BuildContext context) => const Home(
-                    languages: [],
-                    language: [],
+
                   ),
                 ),
               );

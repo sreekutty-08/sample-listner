@@ -75,8 +75,7 @@ class AuthController extends GetxController {
     if (otpController.text == generatedOTP.value) {
       print('OTP matched! Proceed to registration page.');
       fetchDataFromApi().whenComplete(() => Get.to(const Home(
-            languages: ["english"],
-            language: ["hsjk"],
+
           )));
       // Add your navigation logic to the registration page here using Get.to or Get.off
     } else {

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:agora_rtc_engine/rtc_engine.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_foreground_service/flutter_foreground_service.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
@@ -44,7 +45,7 @@ class _CallingState extends State<Calling> {
   @override
   void initState() {
     super.initState();
-
+    ForegroundService().start();
     initializeAgora();
   }
 
@@ -54,6 +55,7 @@ class _CallingState extends State<Calling> {
     _engine.leaveChannel();
     _engine.destroy();
     _timer.cancel();
+    ForegroundService().stop();
     super.dispose();
   }
 

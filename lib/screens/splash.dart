@@ -23,7 +23,7 @@ class _SplashState extends State<Splash> {
     getUserLoggedInStatus();
     getUserId();
     Timer(const Duration(seconds: 5), () {
-      Get.offAll(_isSignedIn ? Home(languages: ["fd"], language:["ghj"]) : Otppage());
+      Get.offAll(_isSignedIn ? const Home() : Otppage());
     });
   }
 

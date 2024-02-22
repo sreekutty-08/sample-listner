@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:listners_app/Widgets/AppBarWidget.dart';
+import 'package:listners_app/Widgets/BottomNavigationBarWidget.dart';
 import 'package:listners_app/screens/home.dart';
 import 'package:listners_app/screens/homescreens/support.dart';
 import 'package:listners_app/screens/homescreens/coins.dart';
@@ -20,247 +23,66 @@ class More extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60.0),
-        child: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 10,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: Colors.purple,
-            ),
-            onPressed: () {
-              // Navigate back to the home screen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const Home(
-                    languages: [],
-                    language: [],
-                  ), // Replace with your home screen widget
-                ),
-              );
-            },
-          ),
-          title: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                height: 60,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/friendly.png',
-                      height: 40,
-                      width: 40,
-                    ),
-                    const SizedBox(width: 5.0),
-                    const Text(
-                      'Friendly Talks',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.purple,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Coins(),
-                  ),
-                );
-              },
-              icon: const Icon(
-                Icons.monetization_on,
-                color: Colors.purple,
-              ),
-            ),
-          ],
-        ),
-      ),
+      appBar: AppBarWidget(context),
       body: SingleChildScrollView(
         child: Column(
           children: [
             // Menu Items
             buildMenuItem('Dashboard', icon: Icons.dashboard, onTap: () {
               // Navigate to Dashboard screen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const Home(
-                    languages: [],
-                    language: [],
-                  ),
-                ),
-              );
+              Get.to(Home());
             }),
             buildMenuItem('Profile', icon: Icons.person, onTap: () {
               // Navigate to Profile screen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const Profile(),
-                ),
-              );
+            Get.to(Profile());
             }),
             buildMenuItem('Notifications', icon: Icons.notifications,
                 onTap: () {
               // Navigate to Notifications screen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const Notifications(),
-                ),
-              );
+                  Get.to(Notifications());
             }),
             buildMenuItem('Call History', icon: Icons.history, onTap: () {
               // Navigate to Call History screen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const CallHistory(),
-                ),
-              );
+              Get.to(CallHistory());
             }),
             buildMenuItem('Earnings', icon: Icons.monetization_on, onTap: () {
               // Navigate to Call History screen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const Earnings(),
-                ),
-              );
+              Get.to(Earnings());
             }),
             buildMenuItem('Request History', icon: Icons.request_quote_sharp,
                 onTap: () {
               // Navigate to Call History screen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const Request(),
-                ),
-              );
+             Get.to(Request());
             }),
 
             buildMenuItem('Terms and Conditions', icon: Icons.description,
                 onTap: () {
               // Navigate to Terms and Conditions screen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const TermConditions(),
-                ),
-              );
+              Get.to(TermConditions());
             }),
             buildMenuItem('Privacy Policy', icon: Icons.privacy_tip, onTap: () {
               // Navigate to Privacy Policy screen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const PrivacyPolicy(),
-                ),
-              );
+              Get.to(PrivacyPolicy());
             }),
             buildMenuItem('Refund Policy', icon: Icons.assignment_return,
                 onTap: () {
               // Navigate to Refund Policy screen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const RefundPolicy(),
-                ),
-              );
+             Get.to(RefundPolicy());
             }),
             buildMenuItem('Settings', icon: Icons.settings, onTap: () {
               // Navigate to Settings screen
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const Settings(),
-                ),
-              );
+            Get.to(Settings());
             }),
             const SizedBox(height: 20),
             // Logout
             buildMenuItem('Logout', icon: Icons.exit_to_app, onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const Otppage(),
-                ),
-              );
+
             }),
             // Add additional scrolling content here
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.purple,
-        unselectedItemColor: Colors.grey,
-        currentIndex: 4, // Set the initial selected index (Home in this case)
-        onTap: (int index) {
-          // Handle navigation based on the selected index
-          switch (index) {
-            case 0:
-              break;
-            case 1:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      const Coins(), // Replace 'Home' with your actual screen widget
-                ),
-              );
-              break;
-            case 2:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const Support(),
-                ),
-              );
-              break;
-            case 3:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      const Notifications(), // Replace 'Home' with your actual screen widget
-                ),
-              );
-              break;
-            case 4:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      const More(), // Replace 'Home' with your actual screen widget
-                ),
-              );
-              break;
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.monetization_on), label: 'Coins'),
-          BottomNavigationBarItem(icon: Icon(Icons.call), label: 'support'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), label: 'Notification'),
-          BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'More'),
-        ],
-      ),
+      bottomNavigationBar: BottomWidget(),
     );
   }
 

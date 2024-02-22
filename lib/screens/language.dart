@@ -88,8 +88,7 @@ class _LanguageState extends State<Language> {
                           context,
                           MaterialPageRoute(
                             builder: (BuildContext context) => Home(
-                              language: selectedLanguages,
-                              languages: const [],
+
                             ),
                           ),
                         );

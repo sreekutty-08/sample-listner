@@ -37,4 +37,18 @@ class UserData {
     }
     return false; // Mobile number or user level not found
   }
+  bool hasMobileNumberforLogin(String targetMobileNumber) {
+    // Check if data is not null and not empty
+    if (data != null && data!.isNotEmpty) {
+      // Iterate through each Datum in the data
+      for (var datum in data!) {
+        // Check if the mobile number matches the target number
+        if (datum.mobile == targetMobileNumber && datum.userLevel == "4") {
+          userId = datum.userId!;
+          return true; // Mobile number found
+        }
+      }
+    }
+    return false; // Mobile number not found
+  }
 }
