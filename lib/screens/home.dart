@@ -30,6 +30,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   BuildContext? get builderContext => null;
   CallController callController = Get.put(CallController());
+  RxBool isOnline=true.obs;
 
   AuthController controller = Get.find();
   // PasswordController passwordController=Get.put(PasswordController());
@@ -44,7 +45,9 @@ class _HomeState extends State<Home> {
       callController.checkIncomingCalls();
     });
     _timer=Timer.periodic(const Duration(seconds: 4), (timer) {
-      callController.updateOnline();
+      if(isOnline.value) {
+        callController.updateOnline();
+      }
     });
   }
 
@@ -56,7 +59,13 @@ class _HomeState extends State<Home> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
         child: AppBar(
-          automaticallyImplyLeading: false,
+          leading:Obx(()=>Switch(
+            activeColor: Colors.green,
+            value: isOnline.value,
+            onChanged:(bool value) {
+              isOnline.value=value;
+            },)) ,
+
           backgroundColor: Colors.white,
           elevation: 10,
           title: Center(

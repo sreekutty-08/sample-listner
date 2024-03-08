@@ -1,5 +1,6 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:listners_app/screens/splash.dart';
@@ -7,6 +8,10 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'Controller/CallController/CallController.dart';
+
+Future backgroundHandler()async{
+
+}
 void callback() {
   final CallController callController = Get.find();
   callController.checkIncomingCalls();
@@ -50,9 +55,7 @@ void main()async {
   const int periodicID = 0;
   const Duration period = const Duration(seconds: 1);
   const Duration timeperiod=const Duration(seconds: 4);// Adjust the period as needed
-
-  AndroidAlarmManager.periodic(period, periodicID, callback);
-  AndroidAlarmManager.periodic(timeperiod, periodicID, callApi);
+  // FirebaseMessaging.onBackgroundMessage(backgroundHandler);
 }
 
 class MyApp extends StatelessWidget {
