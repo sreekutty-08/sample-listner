@@ -40,6 +40,7 @@ class _CallingState extends State<Calling> {
   late RtcEngine _engine;
   CallController controller=Get.put(CallController());
   String? token;
+  RxBool isMute=false.obs;
 
 
   @override
@@ -82,10 +83,7 @@ class _CallingState extends State<Calling> {
         userOffline: (int uid, UserOfflineReason reason) {
           print("remote user $uid left channel");
           setState(() {
-            _engine.leaveChannel();
-            _engine.destroy();
-            _remoteUid = null;
-            Get.back();
+            controller.callCut(widget.progressId);
           });
         },
       ),
@@ -143,7 +141,13 @@ class _CallingState extends State<Calling> {
                   children: [
                     IconButton(
                       onPressed: (){
-                        _engine.disableAudio();
+                        if(!isMute.value){
+                          _engine.disableAudio();
+                          isMute.value=true;
+                        }else{
+                          _engine.enableAudio();
+                          isMute.value=false;
+                        }
                       },
                       icon: const Icon(
                         Icons.mic,

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:listners_app/HelperFunction/HelperFunction.dart';
@@ -27,6 +29,19 @@ class CallController extends GetxController {
           // Navigate to the call screen only if it hasn't been pushed already
           callScreenPushed.value = true;
           await fetchCallerDetail(callModel.value.datas![0].userId!);
+          AwesomeNotifications().createNotification(content: NotificationContent(id: 123, channelKey: "Call_channel",
+          color:Colors.white,
+          title:"Incoming Call",
+          body:  userData.value.data![0].name,
+          category: NotificationCategory.Call,
+            wakeUpScreen: true,
+            fullScreenIntent: true,
+            autoDismissible: false,
+            backgroundColor: Colors.purple,
+          ),actionButtons: [
+            NotificationActionButton(key: "accept", label: "Accept",color: Colors.green,autoDismissible: true),
+            NotificationActionButton(key: "reject", label: "Ignore",color: Colors.red,autoDismissible: true)
+          ]);
 
           Get.to(() => InComingCallScreen(
             channelName:callModel.value.datas![0].userId!,

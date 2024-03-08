@@ -24,7 +24,7 @@ class BottomWidget extends StatelessWidget {
             Get.to(Home());
             break;
           case 1:
-            Get.to(Coins());
+            // Get.to(Coins());
             break;
           case 2:
             Get.to(Support());

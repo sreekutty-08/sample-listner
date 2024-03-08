@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:listners_app/screens/home.dart';
-import 'package:listners_app/screens/homescreens/support.dart';
-import 'package:listners_app/screens/homescreens/coins.dart';
-import 'package:listners_app/screens/homescreens/more.dart';
-import 'package:listners_app/screens/homescreens/notifications.dart';
-import 'package:listners_app/screens/morescreens/earnings.dart';
-
+import 'package:listners_app/Controller/AuthController/AuthController.dart';
 import '../../Widgets/AppBarWidget.dart';
 import '../../Widgets/BottomNavigationBarWidget.dart';
 
@@ -14,22 +8,24 @@ class Profile extends StatefulWidget {
   const Profile({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
-  String name = 'Arunima';
-  String mobile = '123-456-7890';
-  String email = 'arunima.doe@example.com';
-  String walletBalance = '\$500.00';
-  int coinBalance = 100;
-  String aboutMe = 'I love Friendly Talks!';
-  String selectedLanguage = 'English';
-  bool showPassword = false; // Track password visibility
-
+  AuthController controller=Get.find();
+   // Track password visibility
+  bool showPassword = false;
   @override
   Widget build(BuildContext context) {
+    var data=controller.currentUser.value.data![0];
+    String? name = controller.currentUser.value.data![0].name;
+    String? mobile =data.mobile;
+    String? email = data.email;
+    String? walletBalance = '\$500.00';
+    int? coinBalance = 100;
+    String? aboutMe = 'I love Friendly Talks!';
+    String? selectedLanguage = 'English';
+
     return Scaffold(
       appBar: AppBarWidget(context),
       body: SingleChildScrollView(
@@ -61,15 +57,15 @@ class _ProfileState extends State<Profile> {
 
             // User Details Section
             buildSectionHeader('Listner Details'),
-            buildDetailRow('Name', name, () => updateProfileField('Name')),
+            buildDetailRow('Name', name!, () => updateProfileField('Name')),
             buildDetailRow(
-                'Mobile', mobile, () => updateProfileField('Mobile')),
-            buildDetailRow('Email', email, () => updateProfileField('Email')),
+                'Mobile', mobile!, () => updateProfileField('Mobile')),
+            buildDetailRow('Email', email!, () => updateProfileField('Email')),
             const SizedBox(height: 20.0),
 
             // Language Section
             buildSectionHeader('Language'),
-            buildDetailRow('Language', selectedLanguage,
+            buildDetailRow('Language',selectedLanguage,
                 () => updateProfileField('Language')),
             const SizedBox(height: 20.0),
 
@@ -120,7 +116,7 @@ class _ProfileState extends State<Profile> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomWidget(),
+      bottomNavigationBar: const BottomWidget(),
     );
   }
 
@@ -184,6 +180,5 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
-
 
 updateProfileField(String s) {}

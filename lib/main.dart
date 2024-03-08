@@ -1,10 +1,37 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:listners_app/screens/splash.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import 'Controller/CallController/CallController.dart';
+void callback() {
+  final CallController callController = Get.find();
+  callController.checkIncomingCalls();
+
+}
+void callApi()async{
+  final CallController controller=Get.find();
+  controller.checkIncomingCalls();
+}
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Initialize GetX
+   Get.put(CallController());
+
+  // Initialize Android Alarm Manager
+  await AndroidAlarmManager.initialize();
+  AwesomeNotifications().initialize(null, 
+  [NotificationChannel(channelKey: "Call_channel",
+      channelName: "Call Channel",
+      channelDescription: "Channel of calling",
+  defaultColor: Colors.redAccent,
+  ledColor: Colors.white,
+  importance: NotificationImportance.Max,
+  channelShowBadge: true,
+  defaultRingtoneType: DefaultRingtoneType.Ringtone)]);
   await Permission.notification.isDenied.then((value) {
     if(value){
       Permission.notification.request();
@@ -20,6 +47,12 @@ void main()async {
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
   runApp(const MyApp());
+  const int periodicID = 0;
+  const Duration period = const Duration(seconds: 1);
+  const Duration timeperiod=const Duration(seconds: 4);// Adjust the period as needed
+
+  AndroidAlarmManager.periodic(period, periodicID, callback);
+  AndroidAlarmManager.periodic(timeperiod, periodicID, callApi);
 }
 
 class MyApp extends StatelessWidget {

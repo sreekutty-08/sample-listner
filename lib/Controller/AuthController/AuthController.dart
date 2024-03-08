@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:listners_app/HelperFunction/HelperFunction.dart';
+import 'package:listners_app/Models/call_history/call_history.dart';
 import 'package:listners_app/screens/otpverify.dart';
 
 import '../../Models/current_user/current_user.dart';
@@ -18,6 +21,10 @@ class AuthController extends GetxController {
   final apiUrl =
       "https://friendlytalks.in/admin/api/v1/index.php?token=c97369129e36336e71096aabf2270aba";
   var currentUser = CurrentUser().obs;
+  var callHistory=CallHistoryData().obs;
+  RxString freeCoin="".obs;
+  RxString earnCoin="".obs;
+  RxInt hour=0.obs;
 
   String generateOTP(int length) {
     const chars = '0123456789';
@@ -91,6 +98,8 @@ class AuthController extends GetxController {
       final response = await http.get(Uri.parse(apiUrl));
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = json.decode(response.body);
+        await coinData(userId);
+        await getHistory(userId);
         currentUser(CurrentUser.fromJson(jsonResponse));
       } else {
         throw Exception('Failed to load data');
@@ -99,5 +108,45 @@ class AuthController extends GetxController {
       print("faild  $e");
       return null;
     }
+  }
+  Future coinData(user)async{
+    final apiUrl="https://friendlytalks.in/admin/api/v1/coin-balance.php?token=c97369129e36336e71096aabf2270aba&user_id=$user";
+    try{
+      final response=await http.get(Uri.parse(apiUrl));
+      if(response.statusCode==200)
+        {
+          print("coindata");
+          Map<String, dynamic> jsonResponse = json.decode(response.body);
+          freeCoin.value=jsonResponse['data'][0]['free_earn_coin'];
+          print(freeCoin.value);
+          earnCoin.value=jsonResponse['data'][0]['earn_coin'];
+        }
+    }catch(e){
+      return "Error with $e";
+    }
+  }
+
+  Future getHistory(user)async{
+    final apiUrl="https://friendlytalks.in/admin/api/v1/callhistory.php?token=c97369129e36336e71096aabf2270aba&user_id=$user&user_level=4";
+    try{
+      final response=await http.get(Uri.parse(apiUrl));
+      if(response.statusCode==200){
+        Map<String,dynamic>data=json.decode(response.body);
+        callHistory(CallHistoryData.fromJson(data));
+        calculateSum(callHistory.value);
+      }
+    }catch(e){
+      return "Error :$e";
+    }
+  }
+  void calculateSum(CallHistoryData callHistoryData) {
+    if (callHistoryData.data != null) {
+      for (var dataHistory in callHistoryData.data!) {
+        if (dataHistory.callStatus == "true") {
+          hour += int.parse(dataHistory.callDuration ?? "0");
+        }
+      }
+    }
+
   }
 }

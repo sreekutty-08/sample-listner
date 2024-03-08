@@ -30,7 +30,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   BuildContext? get builderContext => null;
   CallController callController = Get.put(CallController());
-  StreamController _controller = StreamController();
+
   AuthController controller = Get.find();
   // PasswordController passwordController=Get.put(PasswordController());
   int _counter = 60;
@@ -48,13 +48,6 @@ class _HomeState extends State<Home> {
     });
   }
 
-  // userDetail(){
-  //   if(passwordController.userData.value.data?[0]==null){
-  //     return controller.currentUser.value.data?[0];
-  //   }else{
-  //   return passwordController.userData.value.data?[0];
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +140,7 @@ class _HomeState extends State<Home> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          data!.name!,
+                          data.name!,
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -185,7 +178,7 @@ class _HomeState extends State<Home> {
                   child: _buildStyledContainer(
                     'Coin Earned',
                     Icons.currency_exchange,
-                    '2000',
+                    controller.earnCoin.value,
                     Colors.white,
                   ),
                 ),
@@ -203,7 +196,7 @@ class _HomeState extends State<Home> {
                   child: _buildStyledContainer(
                     'Free Coin Earned',
                     Icons.attach_money_rounded,
-                    '400',
+                    controller.freeCoin.value,
                     Colors.white,
                   ),
                 ),
@@ -227,7 +220,7 @@ class _HomeState extends State<Home> {
                   child: _buildStyledContainer(
                     'No of Call',
                     Icons.phone_callback_rounded,
-                    '10',
+                    controller.callHistory.value.data!.length.toString(),
                     Colors.white,
                   ),
                 ),
@@ -245,7 +238,7 @@ class _HomeState extends State<Home> {
                   child: _buildStyledContainer(
                     'Total Call Hours',
                     Icons.timer_rounded,
-                    '11.25',
+                    controller.hour.value.toString(),
                     Colors.white,
                   ),
                 ),
@@ -272,12 +265,13 @@ class _HomeState extends State<Home> {
               break;
 
             case 1:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const Coins(),
-                ),
-              );
+              // Navigator.pushReplacement(
+              //   context,
+              //   // MaterialPageRoute(
+              //   //   builder: (BuildContext context) => const
+              //   //   // Coins(),
+              //   // ),
+              // );
               break;
             case 2:
               Navigator.pushReplacement(
