@@ -36,20 +36,26 @@ class CallController extends GetxController {
           category: NotificationCategory.Call,
             wakeUpScreen: true,
             fullScreenIntent: true,
-            autoDismissible: false,
+            autoDismissible: true,
             backgroundColor: Colors.purple,
           ),actionButtons: [
             NotificationActionButton(key: "accept", label: "Accept",color: Colors.green,autoDismissible: true),
-            NotificationActionButton(key: "reject", label: "Ignore",color: Colors.red,autoDismissible: true)
-          ]);
+            NotificationActionButton(key: "reject", label: "Ignore",color: Colors.red,autoDismissible: true),
+          ],);
+          AwesomeNotifications().actionStream.listen((event) {
+            if(event.buttonKeyPressed=="reject"){
+              callCut(callModel.value.datas![0].id);
+            }else{
+              Get.to(() => InComingCallScreen(
+                channelName:callModel.value.datas![0].userId!,
+                userId: userId,
+                profileImageUrl: userData.value.data![0].profileImage,
+                personName: userData.value.data![0].name,
+                progressId:callModel.value.datas![0].id,
+              ));
+            }
+          });
 
-          Get.to(() => InComingCallScreen(
-            channelName:callModel.value.datas![0].userId!,
-            userId: userId,
-            profileImageUrl: userData.value.data![0].profileImage,
-            personName: userData.value.data![0].name,
-            progressId:callModel.value.datas![0].id,
-          ));
         } else if (!hasIncomingCall) {
           // Reset the flag if there is no incoming call
           callScreenPushed.value = false;

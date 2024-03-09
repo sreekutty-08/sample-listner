@@ -156,13 +156,13 @@ class _HomeState extends State<Home> {
                             fontSize: 25,
                           ),
                         ),
-                        const Text(
-                          'Online',
+                        Obx(() => Text(
+                          isOnline.value?'Online':'Offline',
                           style: TextStyle(
-                            color: Colors.green,
+                            color: isOnline.value?Colors.green:Colors.red,
                             fontSize: 20,
                           ),
-                        ),
+                        ),),
                       ],
                     ),
                   ],

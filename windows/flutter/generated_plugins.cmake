@@ -5,8 +5,6 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   agora_rtc_engine
   audioplayers_windows
-  awesome_notifications
-  firebase_core
   permission_handler_windows
 )
 
