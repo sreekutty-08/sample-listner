@@ -23,38 +23,37 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBarWidget(context),
-      body: ListView(
-        padding: const EdgeInsets.all(16.0),
-        children: [
-          SwitchListTile(
-            title: const Text('App Notifications'),
-            subtitle: const Text('Enable/Disable app notifications'),
-            value: _notifications,
-            onChanged: (value) {
-              setState(() {
-                _notifications = value;
-                _saveSettings();
-              });
-            },
-          ),
-          SwitchListTile(
-            title: const Text('Dark Mode'),
-            subtitle: const Text('Switch to dark mode'),
-            value: _darkMode,
-            onChanged: (value) {
-              setState(() {
-                _darkMode = value;
-                _saveSettings();
-                // Implement logic to change theme to dark mode
-                // Example: Theme.of(context).brightness = Brightness.dark;
-              });
-            },
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomWidget()
-    );
+        appBar: AppBarWidget(context),
+        body: ListView(
+          padding: const EdgeInsets.all(16.0),
+          children: [
+            SwitchListTile(
+              title: const Text('App Notifications'),
+              subtitle: const Text('Enable/Disable app notifications'),
+              value: _notifications,
+              onChanged: (value) {
+                setState(() {
+                  _notifications = value;
+                  _saveSettings();
+                });
+              },
+            ),
+            SwitchListTile(
+              title: const Text('Dark Mode'),
+              subtitle: const Text('Switch to dark mode'),
+              value: _darkMode,
+              onChanged: (value) {
+                setState(() {
+                  _darkMode = value;
+                  _saveSettings();
+                  // Implement logic to change theme to dark mode
+                  // Example: Theme.of(context).brightness = Brightness.dark;
+                });
+              },
+            ),
+          ],
+        ),
+        bottomNavigationBar: BottomWidget());
   }
 
   // Add a method to save the settings

@@ -1,17 +1,16 @@
-import 'DataHistory.dart';
+import 'datum.dart';
 
-class CallHistoryData {
+class CoinModel {
   String? status;
-  List<DataHistory>? data;
+  List<CoinData>? data;
   String? code;
 
-  CallHistoryData({this.status, this.data, this.code});
+  CoinModel({this.status, this.data, this.code});
 
-  factory CallHistoryData.fromJson(Map<String, dynamic> json) =>
-      CallHistoryData(
+  factory CoinModel.fromJson(Map<String, dynamic> json) => CoinModel(
         status: json['status'] as String?,
         data: (json['data'] as List<dynamic>?)
-            ?.map((e) => DataHistory.fromJson(e as Map<String, dynamic>))
+            ?.map((e) => CoinData.fromJson(e as Map<String, dynamic>))
             .toList(),
         code: json['code'] as String?,
       );

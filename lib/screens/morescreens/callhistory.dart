@@ -1,180 +1,151 @@
 import 'package:flutter/material.dart';
-import 'package:listners_app/Widgets/AppBarWidget.dart';
-import 'package:listners_app/Widgets/BottomNavigationBarWidget.dart';
-import 'package:listners_app/screens/calling.dart';
-import 'package:listners_app/screens/home.dart';
-import 'package:listners_app/screens/homescreens/support.dart';
-import 'package:listners_app/screens/homescreens/coins.dart';
-import 'package:listners_app/screens/homescreens/more.dart';
-import 'package:listners_app/screens/homescreens/notifications.dart';
-import 'package:listners_app/screens/morescreens/earnings.dart';
+
+import 'package:get/get.dart';
+import 'package:listners_app/Controller/AuthController/AuthController.dart';
+
+
+import '../../Constant.dart';
+import '../../Controller/CallHistoryController/HistoryController.dart';
+import '../../HelperFunction/HelperFunction.dart';
+import '../../Models/call_history_data/call_history_data.dart';
+import '../../Models/user_data/user_data.dart';
+import '../../Widgets/AppBarWidget.dart';
+import '../../Widgets/BottomNavigationBarWidget.dart';
 
 class CallHistory extends StatelessWidget {
   const CallHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
+    HistoryController controller = Get.put(HistoryController());
+    AuthController loginController = Get.find();
+    var datas = loginController.currentUser.value.data![0];
     return Scaffold(
-      appBar: AppBarWidget(context),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Call History',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24.0,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    // Implement delete all functionality
-                  },
-                  child: const Row(
-                    children: [
-                      Icon(Icons.delete_forever, color: Colors.red),
-                      SizedBox(width: 8.0),
-                      Text(
-                        'Delete All',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[200], // Adjust color as needed
-              ),
-              child: ListView(
+        appBar: AppBarWidget(context),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildCallEntry(
-                    profilePhoto: 'assets/images/friendly.png',
-                    name: 'Rithu mohan',
-                    date: '2023-01-01',
-                    time: '12:30 PM',
-                    duration: '5:23',
-                    isAttended: true,
-                    onDelete: () {
-                      // Implement delete functionality for this entry
-                    },
-                    onCall: () {
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (BuildContext context) => const Calling(),
-                      //   ),
-                      // );
-                    },
+                  const Text(
+                    'Call History',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0,
+                    ),
                   ),
-                  _buildCallEntry(
-                    profilePhoto: 'assets/images/friendly.png',
-                    name: 'Athira',
-                    date: '2023-01-02',
-                    time: '3:45 PM',
-                    duration: '2:15',
-                    isAttended: false,
-                    onDelete: () {
-                      // Implement delete functionality for this entry
+                  GestureDetector(
+                    onTap: () {
+                      // Implement delete all functionality
+                      Get.defaultDialog(
+                          title: "Alert",
+                          middleText: "Do you want clear call history?",
+                          onConfirm: () async {
+                            await controller.deleteAll();
+                            Get.back();
+                          },
+                          onCancel: () {
+                            Get.back();
+                          },
+                          buttonColor: Colors.purple);
                     },
-                    onCall: () {
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (BuildContext context) => const Calling(),
-                      //   ),
-                      // );
-                    },
+                    child: const Row(
+                      children: [
+                        Icon(Icons.delete_forever, color: Colors.red),
+                        SizedBox(width: 8.0),
+                        Text(
+                          'Delete All',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  _buildCallEntry(
-                    profilePhoto: 'assets/images/friendly.png',
-                    name: 'Anjali',
-                    date: '2023-05-06',
-                    time: '2:45 PM',
-                    duration: '6:15',
-                    isAttended: true,
-                    onDelete: () {
-                      // Implement delete functionality for this entry
-                    },
-                    onCall: () {
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (BuildContext context) => const Calling(),
-                      //   ),
-                      // );
-                    },
-                  ),
-                  _buildCallEntry(
-                    profilePhoto: 'assets/images/friendly.png',
-                    name: 'Joel',
-                    date: '2023-01-02',
-                    time: '3:45 PM',
-                    duration: '2:15',
-                    isAttended: false,
-                    onDelete: () {
-                      // Implement delete functionality for this entry
-                    },
-                    onCall: () {
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (BuildContext context) => const Calling(),
-                      //   ),
-                      // );
-                    },
-                  ),
-                  _buildCallEntry(
-                    profilePhoto: 'assets/images/friendly.png',
-                    name: 'Rohan',
-                    date: '2023-01-02',
-                    time: '3:45 PM',
-                    duration: '2:15',
-                    isAttended: false,
-                    onDelete: () {
-                      // Implement delete functionality for this entry
-                    },
-                    onCall: () {
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (BuildContext context) => const Calling(),
-                      //   ),
-                      // );
-                    },
-                  ),
-
-                  // Add more call entries as needed
                 ],
               ),
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomWidget()
-    );
+            Expanded(
+              child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white, // Adjust color as needed
+                  ),
+                  child: FutureBuilder(
+                    future: controller.fetchCallHistoryData(userId),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else if (snapshot.hasData) {
+                        if (snapshot.data is String) {
+                          return const Center(
+                            child: Text("No History"),
+                          );
+                        } else {
+                          CallHistoryData callHistory = snapshot.data;
+                          return ListView.builder(
+                            itemCount: callHistory.data!.length,
+                            itemBuilder: (context, index) {
+                              return FutureBuilder<dynamic>(
+                                future: controller.fetchUserData(
+                                    callHistory.data![index].userId),
+                                builder: (context, userSnapshot) {
+                                  if (userSnapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Container();
+                                  } else if (userSnapshot.hasError) {
+                                    return Text('Error: ${userSnapshot.error}');
+                                  } else {
+                                    UserData userDetails = userSnapshot.data!;
+
+                                    return _buildCallEntry(
+                                        profilePhoto:
+                                            userDetails.data![0].profileImage,
+                                        name: userDetails.data![0].name!,
+                                        date:
+                                            callHistory.data![index].updatedOn!,
+                                        coin: callHistory
+                                            .data![index].coinCredited!,
+                                        duration: int.parse(callHistory
+                                            .data![index].callDuration!),
+                                        isAttended:
+                                            callHistory.data![index].callType ==
+                                                "CUT",
+                                        onDelete: () async {
+                                          await controller.delete(
+                                              callHistory.data![index].id!);
+                                        });
+                                  }
+                                },
+                              );
+                            },
+                          );
+                        }
+                      } else {
+                        return const Center(
+                            child: Text('No History Available'));
+                      }
+                    },
+                  )),
+            ),
+          ],
+        ),
+        bottomNavigationBar: const BottomWidget());
   }
 
   Widget _buildCallEntry({
-    required String profilePhoto,
+    required String? profilePhoto,
     required String name,
     required String date,
-    required String time,
-    required String duration,
+    required int duration,
     required bool isAttended,
+    required String coin,
     required VoidCallback onDelete,
-    required VoidCallback onCall, // Added onCall parameter
   }) {
     return Dismissible(
       key: UniqueKey(),
@@ -209,9 +180,11 @@ class CallHistory extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
+            profilePhoto==null?const CircleAvatar(
+              child: Icon(Icons.person),
+            ): CircleAvatar(
+              backgroundImage: NetworkImage("$imageUrl$profilePhoto"),
               radius: 30,
-              backgroundImage: AssetImage(profilePhoto),
             ),
             const SizedBox(width: 16.0),
             Expanded(
@@ -228,20 +201,28 @@ class CallHistory extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
+                      isAttended
+                          ? Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Icon(
+                                  Icons.monetization_on,
+                                  color: Colors.amber,
+                                ),
+                                Text(coin)
+                              ],
+                            )
+                          : Container(),
+                      const Spacer(),
                       IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
                         onPressed: onDelete,
-                      ),
-                      // Added IconButton for making a call
-                      IconButton(
-                        icon: const Icon(Icons.call, color: Colors.green),
-                        onPressed: onCall,
                       ),
                     ],
                   ),
                   const SizedBox(height: 4.0),
                   Text(
-                    '$date, $time',
+                    date,
                     style: const TextStyle(
                       color: Colors.grey,
                     ),
@@ -253,13 +234,15 @@ class CallHistory extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  duration,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
+                isAttended
+                    ? Text(
+                        '${duration ~/ 60}:${duration % 60}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.0,
+                        ),
+                      )
+                    : Container(),
                 const SizedBox(height: 4.0),
                 Icon(
                   isAttended ? Icons.call_received : Icons.call_missed,

@@ -10,27 +10,23 @@ Future<void> initializeService() async {
   final service = FlutterBackgroundService();
 
   await service.configure(
-      iosConfiguration:IosConfiguration(
-        autoStart: true,
-        onForeground: onStart,
-        onBackground:onIosBackround
-      ),
+      iosConfiguration: IosConfiguration(
+          autoStart: true, onForeground: onStart, onBackground: onIosBackround),
       androidConfiguration: AndroidConfiguration(
-          onStart: onStart,
-          isForegroundMode: true,autoStart: true));
+          onStart: onStart, isForegroundMode: true, autoStart: true));
+}
 
-  }
-
-  @pragma('vm:entry-point')
-  Future<bool> onIosBackround(ServiceInstance service)async{
+@pragma('vm:entry-point')
+Future<bool> onIosBackround(ServiceInstance service) async {
   WidgetsFlutterBinding.ensureInitialized();
   DartPluginRegistrant.ensureInitialized();
   return true;
-  }
-@pragma('vm:entry-point')  
-void onStart(ServiceInstance serviceInstance)async{
+}
+
+@pragma('vm:entry-point')
+void onStart(ServiceInstance serviceInstance) async {
   DartPluginRegistrant.ensureInitialized();
-  if(serviceInstance is AndroidServiceInstance){
+  if (serviceInstance is AndroidServiceInstance) {
     serviceInstance.on('setAsForeground').listen((event) {
       serviceInstance.setAsBackgroundService();
     });
@@ -41,10 +37,11 @@ void onStart(ServiceInstance serviceInstance)async{
       serviceInstance.stopSelf();
     });
   }
-  Timer.periodic(const Duration(seconds: 1), (timer)async {
-    if(serviceInstance is AndroidServiceInstance){
-      if(await serviceInstance.isForegroundService()){
-        serviceInstance.setForegroundNotificationInfo(title: "FriendlyTalks", content: "Friendly talks in background");
+  Timer.periodic(const Duration(seconds: 1), (timer) async {
+    if (serviceInstance is AndroidServiceInstance) {
+      if (await serviceInstance.isForegroundService()) {
+        serviceInstance.setForegroundNotificationInfo(
+            title: "FriendlyTalks", content: "Friendly talks in background");
       }
     }
     print("background service running");

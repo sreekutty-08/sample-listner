@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../screens/home.dart';
 import '../screens/morescreens/earnings.dart';
+
 PreferredSize AppBarWidget(BuildContext context) {
   return PreferredSize(
     preferredSize: const Size.fromHeight(60.0),

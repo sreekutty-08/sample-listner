@@ -11,9 +11,9 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PasswordController controller=Get.put(PasswordController());
-    CountryCodeController _countryCodeController=Get.find();
-    RxBool tapped=true.obs;
+    PasswordController controller = Get.put(PasswordController());
+    CountryCodeController _countryCodeController = Get.find();
+    RxBool tapped = true.obs;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -72,24 +72,24 @@ class Login extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                  Obx(
-                        () => DropdownButton(
-                      value: _countryCodeController.selectedCountryCode.value,
-                      items: _countryCodeController.countries.map((country) {
-                        return DropdownMenuItem(
-                          value: country.mobileCode,
-                          child: Text(
-                              "${country.name} (+${country.mobileCode})"),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        _countryCodeController
-                            .setSelectedCountryCode(value.toString());
-                      },
+                    Obx(
+                      () => DropdownButton(
+                        value: _countryCodeController.selectedCountryCode.value,
+                        items: _countryCodeController.countries.map((country) {
+                          return DropdownMenuItem(
+                            value: country.mobileCode,
+                            child: Text(
+                                "${country.name} (+${country.mobileCode})"),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          _countryCodeController
+                              .setSelectedCountryCode(value.toString());
+                        },
+                      ),
                     ),
-                  ),
                     const SizedBox(height: 20),
-                     SizedBox(
+                    SizedBox(
                       width: 250,
                       child: TextField(
                         controller: controller.phoneController,
@@ -101,32 +101,37 @@ class Login extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                     SizedBox(
+                    SizedBox(
                       width: 250,
-                      child: Obx(() => TextField(
-                        controller: controller.passwordController,
-                        obscureText: tapped.value,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          suffixIcon: GestureDetector(
-                            onTap: (){
-                              if(tapped.value){
-                                tapped.value=false;
-                              }else{
-                                tapped.value=true;
-                              }
-                            },
-                              child: const Icon(Icons.remove_red_eye)),
-                          labelStyle: const TextStyle(fontSize: 17),
+                      child: Obx(
+                        () => TextField(
+                          controller: controller.passwordController,
+                          obscureText: tapped.value,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            suffixIcon: GestureDetector(
+                                onTap: () {
+                                  if (tapped.value) {
+                                    tapped.value = false;
+                                  } else {
+                                    tapped.value = true;
+                                  }
+                                },
+                                child: const Icon(Icons.remove_red_eye)),
+                            labelStyle: const TextStyle(fontSize: 17),
+                          ),
                         ),
-                      ),),
+                      ),
                     ),
                     const SizedBox(
                       height: 30,
                     ),
                     GestureDetector(
                       onTap: () {
-                       controller.fetchUserData(context,_countryCodeController.selectedCountryCode.value ,controller.phoneController.text);
+                        controller.fetchUserData(
+                            context,
+                            _countryCodeController.selectedCountryCode.value,
+                            controller.phoneController.text);
                       },
                       child: Container(
                         alignment: Alignment.center,

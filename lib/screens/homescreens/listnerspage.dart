@@ -98,7 +98,6 @@ class ListnersPage extends StatelessWidget {
             ],
           ),
         ),
-        bottomNavigationBar: BottomWidget()
-    );
+        bottomNavigationBar: BottomWidget());
   }
 }

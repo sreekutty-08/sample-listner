@@ -12,14 +12,14 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  AuthController controller=Get.find();
-   // Track password visibility
+  AuthController controller = Get.find();
+  // Track password visibility
   bool showPassword = false;
   @override
   Widget build(BuildContext context) {
-    var data=controller.currentUser.value.data![0];
+    var data = controller.currentUser.value.data![0];
     String? name = controller.currentUser.value.data![0].name;
-    String? mobile =data.mobile;
+    String? mobile = data.mobile;
     String? email = data.email;
     String? walletBalance = '\$500.00';
     int? coinBalance = 100;
@@ -65,7 +65,7 @@ class _ProfileState extends State<Profile> {
 
             // Language Section
             buildSectionHeader('Language'),
-            buildDetailRow('Language',selectedLanguage,
+            buildDetailRow('Language', selectedLanguage,
                 () => updateProfileField('Language')),
             const SizedBox(height: 20.0),
 
@@ -119,8 +119,6 @@ class _ProfileState extends State<Profile> {
       bottomNavigationBar: const BottomWidget(),
     );
   }
-
-
 
   Widget buildSectionHeader(String title) {
     return Text(

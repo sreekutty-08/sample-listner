@@ -17,8 +17,6 @@ import 'package:listners_app/screens/morescreens/earnings.dart';
 import 'package:listners_app/screens/morescreens/profile.dart';
 
 class Home extends StatefulWidget {
-
-
   const Home({
     super.key,
   });
@@ -30,7 +28,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   BuildContext? get builderContext => null;
   CallController callController = Get.put(CallController());
-  RxBool isOnline=true.obs;
+  RxBool isOnline = true.obs;
 
   AuthController controller = Get.find();
   // PasswordController passwordController=Get.put(PasswordController());
@@ -38,34 +36,33 @@ class _HomeState extends State<Home> {
   late Timer _apiTimer;
   late Timer _timer;
   @override
-  void initState(){
+  void initState() {
     // TODO: implement initState
     super.initState();
     _apiTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       callController.checkIncomingCalls();
     });
-    _timer=Timer.periodic(const Duration(seconds: 4), (timer) {
-      if(isOnline.value) {
+    _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
+      if (isOnline.value) {
         callController.updateOnline();
       }
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final data=controller.currentUser.value.data?[0];
+    final data = controller.currentUser.value.data?[0];
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
         child: AppBar(
-          leading:Obx(()=>Switch(
-            activeColor: Colors.green,
-            value: isOnline.value,
-            onChanged:(bool value) {
-              isOnline.value=value;
-            },)) ,
-
+          leading: Obx(() => Switch(
+                activeColor: Colors.green,
+                value: isOnline.value,
+                onChanged: (bool value) {
+                  isOnline.value = value;
+                },
+              )),
           backgroundColor: Colors.white,
           elevation: 10,
           title: Center(
@@ -134,8 +131,8 @@ class _HomeState extends State<Home> {
                     data!.profileImage != null
                         ? CircleAvatar(
                             radius: 30,
-                            backgroundImage: NetworkImage(
-                                "$imageUrl${data.profileImage}"))
+                            backgroundImage:
+                                NetworkImage("$imageUrl${data.profileImage}"))
                         : const CircleAvatar(
                             backgroundColor: Color(0xffE6E6E6),
                             radius: 30,
@@ -156,13 +153,15 @@ class _HomeState extends State<Home> {
                             fontSize: 25,
                           ),
                         ),
-                        Obx(() => Text(
-                          isOnline.value?'Online':'Offline',
-                          style: TextStyle(
-                            color: isOnline.value?Colors.green:Colors.red,
-                            fontSize: 20,
+                        Obx(
+                          () => Text(
+                            isOnline.value ? 'Online' : 'Offline',
+                            style: TextStyle(
+                              color: isOnline.value ? Colors.green : Colors.red,
+                              fontSize: 20,
+                            ),
                           ),
-                        ),),
+                        ),
                       ],
                     ),
                   ],
@@ -184,11 +183,13 @@ class _HomeState extends State<Home> {
                       ),
                     );
                   },
-                  child: _buildStyledContainer(
-                    'Coin Earned',
-                    Icons.currency_exchange,
-                    controller.earnCoin.value,
-                    Colors.white,
+                  child: Obx(
+                    () => _buildStyledContainer(
+                      'Coin Earned',
+                      Icons.currency_exchange,
+                      controller.earnCoin.value,
+                      Colors.white,
+                    ),
                   ),
                 ),
                 GestureDetector(
@@ -202,11 +203,13 @@ class _HomeState extends State<Home> {
                       ),
                     );
                   },
-                  child: _buildStyledContainer(
-                    'Free Coin Earned',
-                    Icons.attach_money_rounded,
-                    controller.freeCoin.value,
-                    Colors.white,
+                  child: Obx(
+                    () => _buildStyledContainer(
+                      'Free Coin Earned',
+                      Icons.attach_money_rounded,
+                      controller.freeCoin.value,
+                      Colors.white,
+                    ),
                   ),
                 ),
               ],
@@ -218,37 +221,29 @@ class _HomeState extends State<Home> {
                 GestureDetector(
                   onTap: () {
                     // Navigate to the "Call History" page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            const CallHistory(), // Replace with the actual page you want to navigate to
-                      ),
-                    );
+                    Get.to(CallHistory());
                   },
-                  child: _buildStyledContainer(
-                    'No of Call',
-                    Icons.phone_callback_rounded,
-                    controller.callHistory.value.data!.length.toString(),
-                    Colors.white,
+                  child: Obx(
+                    () => _buildStyledContainer(
+                      'No of Call',
+                      Icons.phone_callback_rounded,
+                      controller.callHistory.value.data!.length.toString(),
+                      Colors.white,
+                    ),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
                     // Navigate to the "Call History" page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            const CallHistory(), // Replace with the actual page you want to navigate to
-                      ),
-                    );
+                    Get.to(CallHistory());
                   },
-                  child: _buildStyledContainer(
-                    'Total Call Hours',
-                    Icons.timer_rounded,
-                    controller.hour.value.toString(),
-                    Colors.white,
+                  child: Obx(
+                    () => _buildStyledContainer(
+                      'Total Call Hours',
+                      Icons.timer_rounded,
+                      controller.hour.value.toString(),
+                      Colors.white,
+                    ),
                   ),
                 ),
               ],
@@ -266,21 +261,13 @@ class _HomeState extends State<Home> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (BuildContext context) => const Home(
-
-                  ),
+                  builder: (BuildContext context) => const Home(),
                 ),
               );
               break;
 
             case 1:
-              // Navigator.pushReplacement(
-              //   context,
-              //   // MaterialPageRoute(
-              //   //   builder: (BuildContext context) => const
-              //   //   // Coins(),
-              //   // ),
-              // );
+              Get.to(Coins());
               break;
             case 2:
               Navigator.pushReplacement(

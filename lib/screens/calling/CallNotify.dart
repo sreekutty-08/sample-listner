@@ -89,14 +89,14 @@ class IOSOptions {
   final bool includesCallsInRecents;
 
   IOSOptions(
-      this.appName, {
-        this.imageName = "",
-        this.ringtoneSound = "",
-        this.maximumCallGroups = 3,
-        this.maximumCallsPerCallGroup = 1,
-        this.supportsVideo = true,
-        this.includesCallsInRecents = true,
-      })  : assert(appName != null),
+    this.appName, {
+    this.imageName = "",
+    this.ringtoneSound = "",
+    this.maximumCallGroups = 3,
+    this.maximumCallsPerCallGroup = 1,
+    this.supportsVideo = true,
+    this.includesCallsInRecents = true,
+  })  : assert(appName != null),
         assert(imageName != null),
         assert(ringtoneSound != null),
         assert(maximumCallGroups != null),
@@ -152,19 +152,19 @@ class FlutterCallKit {
 
   /// Configures with [options] and sets up handlers for incoming messages.
   void configure(
-      IOSOptions options, {
-        OnReceiveStartCallAction? didReceiveStartCallAction,
-        VoidCallback? onProviderReset,
-        OnAnswerCallAction? performAnswerCallAction,
-        OnEndCallAction? performEndCallAction,
-        OnActivateAudioSession? didActivateAudioSession,
-        OnDeactivateAudioSession? didDeactivateAudioSession,
-        OnIncomingCall? didDisplayIncomingCall,
-        OnMuted? didPerformSetMutedCallAction,
-        OnDTMF? didPerformDTMFAction,
-        OnHold? didToggleHoldAction,
-        OnStartCall? handleStartCallNotification,
-      }) {
+    IOSOptions options, {
+    OnReceiveStartCallAction? didReceiveStartCallAction,
+    VoidCallback? onProviderReset,
+    OnAnswerCallAction? performAnswerCallAction,
+    OnEndCallAction? performEndCallAction,
+    OnActivateAudioSession? didActivateAudioSession,
+    OnDeactivateAudioSession? didDeactivateAudioSession,
+    OnIncomingCall? didDisplayIncomingCall,
+    OnMuted? didPerformSetMutedCallAction,
+    OnDTMF? didPerformDTMFAction,
+    OnHold? didToggleHoldAction,
+    OnStartCall? handleStartCallNotification,
+  }) {
     if (!Platform.isIOS) {
       return;
     }
@@ -264,7 +264,7 @@ class FlutterCallKit {
   Future<void> displayIncomingCall(
       String uuid, String handle, String localizedCallerName,
       {HandleType handleType = HandleType.phoneNumber,
-        bool video = false}) async {
+      bool video = false}) async {
     if (!Platform.isIOS) {
       return;
     }
@@ -287,7 +287,7 @@ class FlutterCallKit {
   ///
   Future<void> startCall(String uuid, String handle, String contactIdentifier,
       {HandleType handleType = HandleType.phoneNumber,
-        bool video = false}) async {
+      bool video = false}) async {
     if (!Platform.isIOS) {
       return;
     }

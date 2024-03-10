@@ -87,9 +87,7 @@ class _LanguageState extends State<Language> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (BuildContext context) => Home(
-
-                            ),
+                            builder: (BuildContext context) => Home(),
                           ),
                         );
                       },

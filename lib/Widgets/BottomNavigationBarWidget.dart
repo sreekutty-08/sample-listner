@@ -20,7 +20,7 @@ class BottomWidget extends StatelessWidget {
       onTap: (int index) {
         switch (index) {
           case 0:
-          // Reload the Home page
+            // Reload the Home page
             Get.to(Home());
             break;
           case 1:

@@ -34,12 +34,12 @@ class More extends StatelessWidget {
             }),
             buildMenuItem('Profile', icon: Icons.person, onTap: () {
               // Navigate to Profile screen
-            Get.to(Profile());
+              Get.to(Profile());
             }),
             buildMenuItem('Notifications', icon: Icons.notifications,
                 onTap: () {
               // Navigate to Notifications screen
-                  Get.to(Notifications());
+              Get.to(Notifications());
             }),
             buildMenuItem('Call History', icon: Icons.history, onTap: () {
               // Navigate to Call History screen
@@ -52,7 +52,7 @@ class More extends StatelessWidget {
             buildMenuItem('Request History', icon: Icons.request_quote_sharp,
                 onTap: () {
               // Navigate to Call History screen
-             Get.to(Request());
+              Get.to(Request());
             }),
 
             buildMenuItem('Terms and Conditions', icon: Icons.description,
@@ -67,17 +67,15 @@ class More extends StatelessWidget {
             buildMenuItem('Refund Policy', icon: Icons.assignment_return,
                 onTap: () {
               // Navigate to Refund Policy screen
-             Get.to(RefundPolicy());
+              Get.to(RefundPolicy());
             }),
             buildMenuItem('Settings', icon: Icons.settings, onTap: () {
               // Navigate to Settings screen
-            Get.to(Settings());
+              Get.to(Settings());
             }),
             const SizedBox(height: 20),
             // Logout
-            buildMenuItem('Logout', icon: Icons.exit_to_app, onTap: () {
-
-            }),
+            buildMenuItem('Logout', icon: Icons.exit_to_app, onTap: () {}),
             // Add additional scrolling content here
           ],
         ),

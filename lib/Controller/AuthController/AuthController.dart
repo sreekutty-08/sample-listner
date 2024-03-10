@@ -6,9 +6,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:listners_app/HelperFunction/HelperFunction.dart';
-import 'package:listners_app/Models/call_history/call_history.dart';
+
 import 'package:listners_app/screens/otpverify.dart';
 
+import '../../Models/call_history_data/call_history_data.dart';
 import '../../Models/current_user/current_user.dart';
 import '../../Models/user_data/datum.dart';
 import '../../Models/user_data/user_data.dart';
@@ -21,10 +22,10 @@ class AuthController extends GetxController {
   final apiUrl =
       "https://friendlytalks.in/admin/api/v1/index.php?token=c97369129e36336e71096aabf2270aba";
   var currentUser = CurrentUser().obs;
-  var callHistory=CallHistoryData().obs;
-  RxString freeCoin="".obs;
-  RxString earnCoin="".obs;
-  RxInt hour=0.obs;
+  var callHistory = CallHistoryData().obs;
+  RxString freeCoin = "".obs;
+  RxString earnCoin = "".obs;
+  RxInt hour = 0.obs;
 
   String generateOTP(int length) {
     const chars = '0123456789';
@@ -81,9 +82,7 @@ class AuthController extends GetxController {
     // Check if the entered OTP matches the generated OTP
     if (otpController.text == generatedOTP.value) {
       print('OTP matched! Proceed to registration page.');
-      fetchDataFromApi().whenComplete(() => Get.to(const Home(
-
-          )));
+      fetchDataFromApi().whenComplete(() => Get.to(const Home()));
       // Add your navigation logic to the registration page here using Get.to or Get.off
     } else {
       print('Invalid OTP. Please try again.');
@@ -109,36 +108,39 @@ class AuthController extends GetxController {
       return null;
     }
   }
-  Future coinData(user)async{
-    final apiUrl="https://friendlytalks.in/admin/api/v1/coin-balance.php?token=c97369129e36336e71096aabf2270aba&user_id=$user";
-    try{
-      final response=await http.get(Uri.parse(apiUrl));
-      if(response.statusCode==200)
-        {
-          print("coindata");
-          Map<String, dynamic> jsonResponse = json.decode(response.body);
-          freeCoin.value=jsonResponse['data'][0]['free_earn_coin'];
-          print(freeCoin.value);
-          earnCoin.value=jsonResponse['data'][0]['earn_coin'];
-        }
-    }catch(e){
+
+  Future coinData(user) async {
+    final apiUrl =
+        "https://friendlytalks.in/admin/api/v1/coin-balance.php?token=c97369129e36336e71096aabf2270aba&user_id=$user";
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+      if (response.statusCode == 200) {
+        print("coindata");
+        Map<String, dynamic> jsonResponse = json.decode(response.body);
+        freeCoin.value = jsonResponse['data'][0]['free_earn_coin'];
+        print(freeCoin.value);
+        earnCoin.value = jsonResponse['data'][0]['earn_coin'];
+      }
+    } catch (e) {
       return "Error with $e";
     }
   }
 
-  Future getHistory(user)async{
-    final apiUrl="https://friendlytalks.in/admin/api/v1/callhistory.php?token=c97369129e36336e71096aabf2270aba&user_id=$user&user_level=4";
-    try{
-      final response=await http.get(Uri.parse(apiUrl));
-      if(response.statusCode==200){
-        Map<String,dynamic>data=json.decode(response.body);
+  Future getHistory(user) async {
+    final apiUrl =
+        "https://friendlytalks.in/admin/api/v1/callhistory.php?token=c97369129e36336e71096aabf2270aba&user_id=$user&user_level=4";
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = json.decode(response.body);
         callHistory(CallHistoryData.fromJson(data));
         calculateSum(callHistory.value);
       }
-    }catch(e){
+    } catch (e) {
       return "Error :$e";
     }
   }
+
   void calculateSum(CallHistoryData callHistoryData) {
     if (callHistoryData.data != null) {
       for (var dataHistory in callHistoryData.data!) {
@@ -147,6 +149,5 @@ class AuthController extends GetxController {
         }
       }
     }
-
   }
 }

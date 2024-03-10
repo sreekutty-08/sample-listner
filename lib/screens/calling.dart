@@ -10,10 +10,11 @@ import 'package:http/http.dart' as http;
 
 import '../Constant.dart';
 import '../HelperFunction/HelperFunction.dart';
+
 class VideoCallAgora extends StatefulWidget {
-  String channelName ;
+  String channelName;
   String userId;
-  VideoCallAgora({super.key,required this.userId,required this.channelName});
+  VideoCallAgora({super.key, required this.userId, required this.channelName});
 
   @override
   State<VideoCallAgora> createState() => _VideoCallAgoraState();
@@ -38,7 +39,7 @@ class _VideoCallAgoraState extends State<VideoCallAgora> {
     _engine.destroy();
   }
 
-  Future InitAgora()async{
+  Future InitAgora() async {
     await [Permission.microphone, Permission.camera].request();
 
     //create the engine
@@ -56,7 +57,6 @@ class _VideoCallAgoraState extends State<VideoCallAgora> {
         debugPrint('userJoined $uid');
         _remoteUid = uid;
         print(uid);
-
       },
       userOffline: (int uid, UserOfflineReason reason) {
         debugPrint('userOffline $uid');
@@ -67,9 +67,7 @@ class _VideoCallAgoraState extends State<VideoCallAgora> {
     _engine.enableVideo();
     print(widget.channelName);
     await _engine.joinChannel(null, widget.channelName!, null, 0);
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +92,10 @@ class _VideoCallAgoraState extends State<VideoCallAgora> {
 
   Widget _remoteVideo() {
     if (_remoteUid != null) {
-      return RtcRemoteView.SurfaceView(uid: _remoteUid!, channelId: widget.channelName!,);
+      return RtcRemoteView.SurfaceView(
+        uid: _remoteUid!,
+        channelId: widget.channelName!,
+      );
     } else {
       return Text(
         'Please wait for remote user to join',

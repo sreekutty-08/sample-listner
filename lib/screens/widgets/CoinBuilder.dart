@@ -52,10 +52,10 @@ class CoinBuilder extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              filterKey == "Coin Purchased"
+                              filterKey == "Coin credited due to call"
                                   ? filteredData[index].coinCredit!
                                   : filteredData[index].coinDebit!,
-                              style: filterKey == "Coin Purchased"
+                              style: filterKey == "Coin credited due to call"
                                   ? const TextStyle(
                                       color: Colors.green,
                                       fontWeight: FontWeight.bold,
@@ -65,7 +65,9 @@ class CoinBuilder extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
                             ),
-                            filterKey == "Coin Purchased"? const Text("By Recharge"):const Text('By Call')
+                            filterKey == "Coin Purchased"
+                                ? const Text("By Recharge")
+                                : const Text('By Call')
                           ],
                         ),
                       ),

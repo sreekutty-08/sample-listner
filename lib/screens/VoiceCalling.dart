@@ -18,14 +18,14 @@ class Calling extends StatefulWidget {
   final String channelName;
   final String userId;
   final String progressId;
-  const Calling({
-    Key? key,
-    required this.personName,
-    required this.profileImageUrl,
-    required this.channelName,
-    required this.progressId,
-    required this.userId
-  }) : super(key: key);
+  const Calling(
+      {Key? key,
+      required this.personName,
+      required this.profileImageUrl,
+      required this.channelName,
+      required this.progressId,
+      required this.userId})
+      : super(key: key);
 
   @override
   // ignore: library_private_types_in_public_api
@@ -38,10 +38,9 @@ class _CallingState extends State<Calling> {
   int _seconds = 0;
   int? _remoteUid;
   late RtcEngine _engine;
-  CallController controller=Get.put(CallController());
+  CallController controller = Get.put(CallController());
   String? token;
-  RxBool isMute=false.obs;
-
+  RxBool isMute = false.obs;
 
   @override
   void initState() {
@@ -49,7 +48,6 @@ class _CallingState extends State<Calling> {
     ForegroundService().start();
     initializeAgora();
   }
-
 
   @override
   void dispose() {
@@ -107,15 +105,17 @@ class _CallingState extends State<Calling> {
                   children: [
                     widget.profileImageUrl != null
                         ? CircleAvatar(
-                        radius: 80, backgroundImage: NetworkImage("$imageUrl${widget.profileImageUrl}"))
+                            radius: 80,
+                            backgroundImage: NetworkImage(
+                                "$imageUrl${widget.profileImageUrl}"))
                         : const CircleAvatar(
-                      backgroundColor: Color(0xffE6E6E6),
-                      radius: 80,
-                      child: Icon(
-                        Icons.person,
-                        color: Color(0xffCCCCCC),
-                      ),
-                    ),
+                            backgroundColor: Color(0xffE6E6E6),
+                            radius: 80,
+                            child: Icon(
+                              Icons.person,
+                              color: Color(0xffCCCCCC),
+                            ),
+                          ),
                     const SizedBox(height: 16),
                     Text(
                       widget.personName!,
@@ -127,7 +127,8 @@ class _CallingState extends State<Calling> {
                     ),
                     const SizedBox(height: 10),
                     Text(durationText,
-                        style: const TextStyle(fontSize: 16, color: Colors.white)),
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.white)),
                   ],
                 ),
               ),
@@ -140,13 +141,13 @@ class _CallingState extends State<Calling> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
-                      onPressed: (){
-                        if(!isMute.value){
+                      onPressed: () {
+                        if (!isMute.value) {
                           _engine.disableAudio();
-                          isMute.value=true;
-                        }else{
+                          isMute.value = true;
+                        } else {
                           _engine.enableAudio();
-                          isMute.value=false;
+                          isMute.value = false;
                         }
                       },
                       icon: const Icon(
@@ -161,9 +162,9 @@ class _CallingState extends State<Calling> {
                         color: Colors.red,
                         size: 64,
                       ),
-                      onTap: ()async {
-                       await controller.callCut(widget.progressId);
-                        },
+                      onTap: () async {
+                        await controller.callCut(widget.progressId);
+                      },
                     ),
                   ],
                 ),

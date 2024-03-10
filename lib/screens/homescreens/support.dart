@@ -25,25 +25,25 @@ class Support extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBarWidget(context),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/images/whatsuplogo.png', // Replace with your logo asset
-                width: 150,
-                height: 150,
-              ),
-              const SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: openWhatsAppChat,
-                child: const Text('Chat with Us on WhatsApp'),
-              ),
-            ],
-          ),
+      appBar: AppBarWidget(context),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/whatsuplogo.png', // Replace with your logo asset
+              width: 150,
+              height: 150,
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: openWhatsAppChat,
+              child: const Text('Chat with Us on WhatsApp'),
+            ),
+          ],
         ),
-        bottomNavigationBar: BottomWidget(),
+      ),
+      bottomNavigationBar: BottomWidget(),
     );
   }
 
