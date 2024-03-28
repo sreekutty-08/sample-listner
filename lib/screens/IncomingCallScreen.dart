@@ -97,7 +97,7 @@ class _InComingCallScreenState extends State<InComingCallScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
-                  icon: Icon(Icons.call_end),
+                  icon: const Icon(Icons.call_end),
                   color: Colors.red,
                   iconSize: 40,
                   onPressed: () {
@@ -110,8 +110,9 @@ class _InComingCallScreenState extends State<InComingCallScreen> {
                   icon: const Icon(Icons.call),
                   color: Colors.green,
                   iconSize: 40,
-                  onPressed: () {
+                  onPressed: ()async {
                     stopRingtone();
+                    await callController.callAccept(widget.progressId!);
                     Get.offAll(Calling(
                         personName: widget.personName,
                         profileImageUrl: widget.profileImageUrl,

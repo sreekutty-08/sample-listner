@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:listners_app/Constant.dart';
 import 'package:listners_app/Controller/AuthController/AuthController.dart';
-import 'package:listners_app/Controller/AuthController/PasswordController.dart';
 import 'package:listners_app/Controller/CallController/CallController.dart';
-import 'package:listners_app/Models/current_user/current_user.dart';
+import 'package:listners_app/HelperFunction/HelperFunction.dart';
 import 'package:listners_app/screens/homescreens/support.dart';
 import 'package:listners_app/screens/homescreens/coins.dart';
 import 'package:listners_app/screens/homescreens/more.dart';
@@ -15,6 +13,7 @@ import 'package:listners_app/screens/homescreens/notifications.dart';
 import 'package:listners_app/screens/morescreens/callhistory.dart';
 import 'package:listners_app/screens/morescreens/earnings.dart';
 import 'package:listners_app/screens/morescreens/profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home({
@@ -28,7 +27,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   BuildContext? get builderContext => null;
   CallController callController = Get.put(CallController());
-  RxBool isOnline = true.obs;
 
   AuthController controller = Get.find();
   // PasswordController passwordController=Get.put(PasswordController());
@@ -38,16 +36,20 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     // TODO: implement initState
+
     super.initState();
+    controller.callMethod();
     _apiTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      callController.checkIncomingCalls();
+      callController.checkIncomingCalls(userId);
     });
     _timer = Timer.periodic(const Duration(seconds: 4), (timer) {
-      if (isOnline.value) {
-        callController.updateOnline();
+      if (isOnline.value==true) {
+        callController.updateOnline(userId);
       }
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +61,11 @@ class _HomeState extends State<Home> {
           leading: Obx(() => Switch(
                 activeColor: Colors.green,
                 value: isOnline.value,
-                onChanged: (bool value) {
+                onChanged: (bool value)async {
+                  SharedPreferences sf=await SharedPreferences.getInstance();
+                  sf.setBool("isOnline",value);
                   isOnline.value = value;
+
                 },
               )),
           backgroundColor: Colors.white,
@@ -221,7 +226,7 @@ class _HomeState extends State<Home> {
                 GestureDetector(
                   onTap: () {
                     // Navigate to the "Call History" page
-                    Get.to(CallHistory());
+                    Get.to(const CallHistory());
                   },
                   child: Obx(
                     () => _buildStyledContainer(
@@ -235,7 +240,7 @@ class _HomeState extends State<Home> {
                 GestureDetector(
                   onTap: () {
                     // Navigate to the "Call History" page
-                    Get.to(CallHistory());
+                    Get.to(const CallHistory());
                   },
                   child: Obx(
                     () => _buildStyledContainer(
@@ -258,40 +263,17 @@ class _HomeState extends State<Home> {
         onTap: (int index) {
           switch (index) {
             case 0:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const Home(),
-                ),
-              );
+              Get.to(Home());
               break;
 
             case 1:
-              Get.to(Coins());
+              Get.to(const Coins());
               break;
             case 2:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const Support(),
-                ),
-              );
+              Get.to(const Support());
               break;
             case 3:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const Notifications(),
-                ),
-              );
-              break;
-            case 4:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const More(),
-                ),
-              );
+              Get.to(const More());
               break;
           }
         },
@@ -300,8 +282,6 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
               icon: Icon(Icons.monetization_on), label: 'Coins'),
           BottomNavigationBarItem(icon: Icon(Icons.call), label: 'Call'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.notifications), label: 'Notification'),
           BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'More'),
         ],
       ),

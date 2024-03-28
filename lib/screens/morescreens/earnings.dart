@@ -1,17 +1,34 @@
+import 'package:easy_loading_button/easy_loading_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:listners_app/Controller/AuthController/AuthController.dart';
 import 'package:listners_app/Widgets/AppBarWidget.dart';
 import 'package:listners_app/Widgets/BottomNavigationBarWidget.dart';
-import 'package:listners_app/screens/home.dart';
-import 'package:listners_app/screens/homescreens/support.dart';
-import 'package:listners_app/screens/homescreens/coins.dart';
-import 'package:listners_app/screens/homescreens/more.dart';
-import 'package:listners_app/screens/homescreens/notifications.dart';
 
-class Earnings extends StatelessWidget {
+class Earnings extends StatefulWidget {
   const Earnings({super.key});
 
   @override
+  State<Earnings> createState() => _EarningsState();
+}
+
+class _EarningsState extends State<Earnings> {
+  AuthController controller=Get.find();
+
+  @override
+  void initState() {
+
+    // TODO: implement initState
+    super.initState();
+    controller.callMethod();
+    // WidgetsBinding.instance
+    //     .addPostFrameCallback((_) async{
+    //       await controller.callMethod();});
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBarWidget(context),
       body: SingleChildScrollView(
@@ -114,7 +131,7 @@ class Earnings extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          _buildInnerBox('Your Coins', '2000'),
+                          Obx(() => _buildInnerBox('Your Coins', controller.earnCoin.value)),
                           _buildArrowBox(),
                           _buildInnerBox('Required Coins', '960000'),
                         ],
@@ -122,17 +139,21 @@ class Earnings extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Add functionality for the button press
+                      child: EasyButton(
+                        borderRadius: 20,
+                        buttonColor: controller.earnCoin.value=='960000'?Colors.pink:Colors.grey,
+                        loadingStateWidget: CircularProgressIndicator(),
+                        onPressed: () async{
+
                         },
-                        child: const Text('MINIMUM COIN IS NOT PRESENT'),
+                        idleStateWidget: Text(controller.earnCoin.value=='960000'?"REQUEST WITHDRAW":'MINIMUM COIN IS NOT PRESENT',style: TextStyle(color: controller.earnCoin.value=='960000'?Colors.white:Colors.black),),
                       ),
                     ),
                   ],
                 ),
               ),
             ),
+            const SizedBox(height: 20,),
             Container(
               width: 365.0, // Adjust width as needed
               height: 350.0, // Adjust height as needed
@@ -215,7 +236,7 @@ class Earnings extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          _buildInnerBox('Your Free Coins', '600'),
+                          Obx(() => _buildInnerBox('Your Free Coins', controller.freeCoin.value)),
                           _buildArrowBox(),
                           _buildInnerBox('Required Free Coins', '960000'),
                         ],
@@ -223,11 +244,14 @@ class Earnings extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Add functionality for the button press
+                      child:  EasyButton(
+                        borderRadius: 20,
+                        buttonColor: controller.earnCoin.value=='960000'?Colors.pink:Colors.grey,
+                        loadingStateWidget: const CircularProgressIndicator(),
+                        onPressed: () async{
+
                         },
-                        child: const Text('MINIMUM COIN IS NOT PRESENT'),
+                        idleStateWidget: Text(controller.earnCoin.value=='960000'?"REQUEST WITHDRAW":'MINIMUM COIN IS NOT PRESENT',style: TextStyle(color: controller.earnCoin.value=='960000'?Colors.white:Colors.black),),
                       ),
                     ),
                   ],

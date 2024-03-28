@@ -25,4 +25,9 @@ class HelperFunction {
     SharedPreferences sf = await SharedPreferences.getInstance();
     return sf.getString(userIdKey);
   }
+  static Future deleteLoggedInStatus()async{
+    SharedPreferences sf=await SharedPreferences.getInstance();
+    sf.remove(userLoggedInKey);
+    sf.remove(userIdKey);
+  }
 }

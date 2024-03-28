@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,17 +6,16 @@ import 'package:http/http.dart' as http;
 import 'package:listners_app/HelperFunction/HelperFunction.dart';
 import 'package:listners_app/Models/call_model/call_model.dart';
 import 'package:listners_app/Models/user_data/user_data.dart';
-import 'package:listners_app/screens/IncomingCallScreen.dart';
 import 'package:listners_app/screens/home.dart';
-
 class CallController extends GetxController {
   RxBool callScreenPushed = false.obs;
   var callModel = CallModel().obs;
   var userData = UserData().obs;
 
-  void checkIncomingCalls() async {
+  
+  void checkIncomingCalls(userID) async {
     final apiUrl =
-        "https://friendlytalks.in/admin/api/v1/incoming-call-check.php?token=c97369129e36336e71096aabf2270aba&user_id=$userId&user_level=4";
+        "https://friendlytalks.in/admin/api/v1/incoming-call-check.php?token=c97369129e36336e71096aabf2270aba&user_id=$userID&user_level=4";
     try {
       var response = await http.get(Uri.parse(apiUrl));
 
@@ -56,6 +54,7 @@ class CallController extends GetxController {
                   autoDismissible: true),
             ],
           );
+
         } else if (!hasIncomingCall) {
           // Reset the flag if there is no incoming call
           callScreenPushed.value = false;
@@ -69,6 +68,7 @@ class CallController extends GetxController {
       print('Error: $e');
     }
   }
+
 
   Future callCut(progressId) async {
     final apiUrl =
@@ -99,9 +99,9 @@ class CallController extends GetxController {
     }
   }
 
-  Future updateOnline() async {
+  Future updateOnline(userID) async {
     final apiUrl =
-        "https://friendlytalks.in/admin/api/v1/online-update.php?token=c97369129e36336e71096aabf2270aba&user_id=$userId";
+        "https://friendlytalks.in/admin/api/v1/online-update.php?token=c97369129e36336e71096aabf2270aba&user_id=$userID";
     try {
       final response = await http.get(Uri.parse(apiUrl));
       if (response.statusCode == 200) {
@@ -111,6 +111,19 @@ class CallController extends GetxController {
       }
     } catch (e) {
       return "Error :$e";
+    }
+  }
+
+  Future callAccept(String progressId)async{
+    final apiUrl="https://friendlytalks.in/admin/api/v1/listener-callaccept.php?token=c97369129e36336e71096aabf2270aba&progressId=$progressId";
+    try{
+      final response=await http.get(Uri.parse(apiUrl));
+      if(response.statusCode==200){
+        print("successfully accept call");
+      }
+
+    }catch(e){
+
     }
   }
 }

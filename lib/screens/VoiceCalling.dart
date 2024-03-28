@@ -108,7 +108,7 @@ class _CallingState extends State<Calling> {
                             radius: 80,
                             backgroundImage: NetworkImage(
                                 "$imageUrl${widget.profileImageUrl}"))
-                        : const CircleAvatar(
+                        :const CircleAvatar(
                             backgroundColor: Color(0xffE6E6E6),
                             radius: 80,
                             child: Icon(

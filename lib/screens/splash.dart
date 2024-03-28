@@ -7,6 +7,8 @@ import 'package:listners_app/screens/StreamDemo.dart';
 import 'package:listners_app/screens/home.dart';
 import 'package:listners_app/screens/otppage.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../Constant.dart';
 import '../HelperFunction/HelperFunction.dart';
 
 class Splash extends StatefulWidget {
@@ -21,6 +23,7 @@ class _SplashState extends State<Splash> {
   void initState() {
     super.initState();
     getUserLoggedInStatus();
+    getUserOnlineStatus();
     getUserId();
     Timer(const Duration(seconds: 5), () {
       Get.offAll(_isSignedIn ? const Home() : Otppage());
@@ -38,6 +41,16 @@ class _SplashState extends State<Splash> {
         });
       }
     });
+  }
+  getUserOnlineStatus()async{
+    SharedPreferences sf=await SharedPreferences.getInstance();
+    bool? value= sf.getBool("isOnline");
+    if(value!=null){
+      isOnline.value=value;
+      return value;
+    }else{
+      return false;
+    }
   }
 
   getUserId() async {

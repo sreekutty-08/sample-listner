@@ -13,27 +13,31 @@ class BottomWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    RxInt currentIndex=0.obs;
     return BottomNavigationBar(
       selectedItemColor: Colors.purple,
       unselectedItemColor: Colors.grey,
-      currentIndex: 4,
+      currentIndex:2,
       onTap: (int index) {
         switch (index) {
           case 0:
             // Reload the Home page
-            Get.to(Home());
+          currentIndex.value=index;
+
+            Get.to(const Home());
             break;
           case 1:
-            // Get.to(Coins());
+            currentIndex.value=index;
+            Get.to(Coins());
             break;
           case 2:
-            Get.to(Support());
+            currentIndex.value=index;
+            print(currentIndex);
+            Get.to(const Support());
             break;
           case 3:
-            Get.to(Notifications());
-            break;
-          case 4:
-            Get.to(More());
+            currentIndex.value=index;
+            Get.to(const More());
             break;
         }
       },
@@ -43,8 +47,6 @@ class BottomWidget extends StatelessWidget {
             icon: Icon(Icons.monetization_on), label: 'Coins'),
         BottomNavigationBarItem(
             icon: Icon(Icons.call, size: 32.0), label: 'support'),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.notifications), label: 'Notification'),
         BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'More'),
       ],
     );

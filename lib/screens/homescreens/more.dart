@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:listners_app/HelperFunction/HelperFunction.dart';
 import 'package:listners_app/Widgets/AppBarWidget.dart';
 import 'package:listners_app/Widgets/BottomNavigationBarWidget.dart';
 import 'package:listners_app/screens/home.dart';
@@ -36,11 +37,6 @@ class More extends StatelessWidget {
               // Navigate to Profile screen
               Get.to(Profile());
             }),
-            buildMenuItem('Notifications', icon: Icons.notifications,
-                onTap: () {
-              // Navigate to Notifications screen
-              Get.to(Notifications());
-            }),
             buildMenuItem('Call History', icon: Icons.history, onTap: () {
               // Navigate to Call History screen
               Get.to(CallHistory());
@@ -75,7 +71,11 @@ class More extends StatelessWidget {
             }),
             const SizedBox(height: 20),
             // Logout
-            buildMenuItem('Logout', icon: Icons.exit_to_app, onTap: () {}),
+            buildMenuItem('Logout', icon: Icons.exit_to_app, onTap: () async{
+             await HelperFunction.deleteLoggedInStatus();
+             Get.offAll(Otppage());
+
+            }),
             // Add additional scrolling content here
           ],
         ),

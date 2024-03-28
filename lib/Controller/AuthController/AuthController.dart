@@ -150,4 +150,9 @@ class AuthController extends GetxController {
       }
     }
   }
+  Future callMethod()async{
+    await coinData(userId);
+    await getHistory(userId);
+    calculateSum(callHistory.value);
+  }
 }
