@@ -21,9 +21,7 @@ class _EarningsState extends State<Earnings> {
     // TODO: implement initState
     super.initState();
     controller.callMethod();
-    // WidgetsBinding.instance
-    //     .addPostFrameCallback((_) async{
-    //       await controller.callMethod();});
+
   }
 
   @override
@@ -141,12 +139,14 @@ class _EarningsState extends State<Earnings> {
                     Center(
                       child: EasyButton(
                         borderRadius: 20,
-                        buttonColor: controller.earnCoin.value=='960000'?Colors.pink:Colors.grey,
-                        loadingStateWidget: CircularProgressIndicator(),
+                        buttonColor: int.parse(controller.earnCoin.value) >= 960000?Colors.pink:Colors.grey,
+                        loadingStateWidget: const CircularProgressIndicator(),
                         onPressed: () async{
-
+                          if(int.parse(controller.earnCoin.value)>=960000) {
+                            await controller.requestPayOut();
+                          }
                         },
-                        idleStateWidget: Text(controller.earnCoin.value=='960000'?"REQUEST WITHDRAW":'MINIMUM COIN IS NOT PRESENT',style: TextStyle(color: controller.earnCoin.value=='960000'?Colors.white:Colors.black),),
+                        idleStateWidget: Text(int.parse(controller.earnCoin.value) >= 960000?"REQUEST WITHDRAW":'MINIMUM COIN IS NOT PRESENT',style: TextStyle(color: int.parse(controller.earnCoin.value) >= 960000?Colors.white:Colors.black),),
                       ),
                     ),
                   ],
@@ -246,12 +246,12 @@ class _EarningsState extends State<Earnings> {
                     Center(
                       child:  EasyButton(
                         borderRadius: 20,
-                        buttonColor: controller.earnCoin.value=='960000'?Colors.pink:Colors.grey,
+                        buttonColor: int.parse(controller.earnCoin.value) >= 960000?Colors.pink:Colors.grey,
                         loadingStateWidget: const CircularProgressIndicator(),
                         onPressed: () async{
 
                         },
-                        idleStateWidget: Text(controller.earnCoin.value=='960000'?"REQUEST WITHDRAW":'MINIMUM COIN IS NOT PRESENT',style: TextStyle(color: controller.earnCoin.value=='960000'?Colors.white:Colors.black),),
+                        idleStateWidget: Text(int.parse(controller.earnCoin.value) >= 960000?"REQUEST WITHDRAW":'MINIMUM COIN IS NOT PRESENT',style: TextStyle(color: int.parse(controller.earnCoin.value) >= 960000?Colors.white:Colors.black),),
                       ),
                     ),
                   ],
@@ -261,7 +261,7 @@ class _EarningsState extends State<Earnings> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomWidget(),
+      bottomNavigationBar: const BottomWidget(),
     );
   }
 

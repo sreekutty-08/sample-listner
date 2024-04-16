@@ -1,9 +1,9 @@
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:listners_app/HelperFunction/HelperFunction.dart';
-
+import 'package:listners_app/back_service.dart';
 import 'package:listners_app/screens/Notification/notifyPage.dart';
 import 'package:listners_app/screens/homescreens/notifications.dart';
 import 'package:listners_app/screens/splash.dart';
@@ -15,32 +15,26 @@ import 'Controller/CallController/CallController.dart';
 
 
 
-const fetchBackground = "fetchBackground";
-@pragma('vm:entry-point')
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    print("Native called background task: $task");
-    switch (task){
-      case fetchBackground:
-        callApi();
-        break;
-    }
-    await callApi();
-    return Future.value(true);
-    });
-}
 
 callApi()async
 {
+  Timer _timer;
+  Timer timer;
   CallController controller=Get.put(CallController());
   SharedPreferences sf=await SharedPreferences.getInstance();
-  bool? online=sf.getBool("isOnline");
-  String? userID=sf.getString('USERIDKEY');
+  bool? online= await HelperFunction.getUserLoggedInStatus();
+  String? userID=await HelperFunction.getUserIdFromSF();
   if (online != null && userID != null) {
-    controller.updateOnline(userID);
-    controller.checkIncomingCalls(userID);
+    _timer = Timer.periodic(const Duration(seconds: 4), (timer) async {
+      await controller.updateOnline(HelperFunction.getUserIdFromSF());
+    });
+    timer=Timer.periodic(const Duration(seconds: 1), (timer) {
+      controller.checkIncomingCalls(HelperFunction.getUserIdFromSF());
+    });
   } else {
-    print("User data not available. Background task aborted.");
+    print("User data not available.");
+    print("Online: $online, UserID: $userID");
+    print("Background task aborted.");
   }
 
 }
@@ -48,17 +42,8 @@ callApi()async
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Initialize GetX
-  await Workmanager().initialize(
-    callbackDispatcher,
-  );
-  await Workmanager().registerPeriodicTask(
-    "1",
-    fetchBackground,
-    frequency: const Duration(seconds: 2),
-    constraints: Constraints(
-      networkType: NetworkType.connected,
-    ),
-  );
+  await initializeService();
+
   Get.put(CallController());
   const int periodicID = 0;
   const Duration period = Duration(seconds: 1);

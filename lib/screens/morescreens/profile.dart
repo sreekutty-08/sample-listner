@@ -4,12 +4,13 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:listners_app/Controller/AuthController/AuthController.dart';
 import 'package:listners_app/Controller/ProfileController/ProfileController.dart';
-import 'package:listners_app/Models/Languages/Languages.dart';
 import '../../Constant.dart';
 import '../../Models/listener_data/listener_data.dart';
 import '../../Widgets/AppBarWidget.dart';
 import '../../Widgets/BottomNavigationBarWidget.dart';
 import 'dart:io';
+
+import 'Widgets/LanguageSelection.dart';
 class Profile extends StatefulWidget {
   const Profile({super.key});
 
@@ -18,18 +19,13 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  static List<Language> languages = [
- Language(id: "1", name: "English"),
-    Language(id: "2", name: "Malayalam"),
-    Language(id: "3", name: "Tamil"),
-    Language(id: "4", name: "Hindi"),
-  ];
+
   List<String> selectedChoices = [];
   AuthController controller = Get.find();
   ProfileController profileController=Get.put(ProfileController());
   String? aboutMe='';
   ListenerData? listenerData;
-  String? language = "2";
+  String? language = "";
   @override
   void initState() {
     // TODO: implement initState
@@ -39,6 +35,7 @@ class _ProfileState extends State<Profile> {
 
   Future<void> fetchAbout() async {
     listenerData = await profileController.fetchAbout();
+    print(listenerData!.data![0].langId);
     setState(() {
       aboutMe = listenerData!.data![0].about;
       language=listenerData!.data![0].langId;
@@ -105,8 +102,8 @@ class _ProfileState extends State<Profile> {
                       ? CircleAvatar(
                       radius: 70,
                       backgroundImage:
-                      // NetworkImage("$imageUrl${data.profileImage}")
-                    NetworkImage("https://cdn.pixabay.com/photo/2015/03/22/17/28/rings-684944_1280.jpg")
+                      NetworkImage("$imageUrl${data.profileImage}")
+                    // NetworkImage("https://cdn.pixabay.com/photo/2015/03/22/17/28/rings-684944_1280.jpg")
                   )
                       : const CircleAvatar(
                     backgroundColor: Color(0xffE6E6E6),
@@ -161,6 +158,20 @@ class _ProfileState extends State<Profile> {
             buildDetailRow('Language', getLanguageName(selectedLanguages),(){
 
             }),
+            ElevatedButton(
+              onPressed: ()async{
+                // Implement update password functionality
+               await Get.dialog(LanguageSelectionPopup());
+               fetchAbout();
+                // After selecting languages, update the API or perform any other action
+                String languageValue = profileController.selectedLanguages.toString();
+                print(languageValue);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+              ),
+              child: const Text('UPDATE LANGUAGE'),
+            ),
             const SizedBox(height: 20.0),
 
             // Password Section
@@ -210,7 +221,6 @@ class _ProfileState extends State<Profile> {
                 onConfirm: ()async{
                   await profileController.deleteAccount().then((value) => Get.defaultDialog(
                     middleText: value
-
                   ));
                   Get.back();
                 },
@@ -495,6 +505,7 @@ class _ProfileState extends State<Profile> {
           );
         });
   }
+
 
 }
 

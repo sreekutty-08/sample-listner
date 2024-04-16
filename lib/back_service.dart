@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:listners_app/main.dart';
 
 Future<void> initializeService() async {
   final service = FlutterBackgroundService();
@@ -40,11 +41,11 @@ void onStart(ServiceInstance serviceInstance) async {
   Timer.periodic(const Duration(seconds: 1), (timer) async {
     if (serviceInstance is AndroidServiceInstance) {
       if (await serviceInstance.isForegroundService()) {
-        serviceInstance.setForegroundNotificationInfo(
-            title: "FriendlyTalks", content: "Friendly talks in background");
+        callApi();
       }
     }
     print("background service running");
     serviceInstance.invoke('update');
   });
+
 }

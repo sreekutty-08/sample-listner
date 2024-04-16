@@ -141,6 +141,24 @@ class AuthController extends GetxController {
     }
   }
 
+  Future requestPayOut()async{
+    final apiUrl="https://friendlytalks.in/admin/api/v1/lisiner-payoutrequest.php?token=c97369129e36336e71096aabf2270aba&user_id=$userId&slab_id=0&type=1";
+    try{
+      final response=await http.get(Uri.parse(apiUrl));
+      if(response.statusCode==200){
+        Map<String,dynamic>data=json.decode(response.body);
+        List value=data['data'];
+        Get.defaultDialog(
+          title: "Congratulation",
+          middleText: value[0]
+        );
+      }
+    }catch(e){
+      rethrow;
+    }
+  }
+
+
   void calculateSum(CallHistoryData callHistoryData) {
     if (callHistoryData.data != null) {
       for (var dataHistory in callHistoryData.data!) {

@@ -1,13 +1,42 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart'as http;
 import 'package:listners_app/HelperFunction/HelperFunction.dart';
 
+import '../../Models/Languages/Languages.dart';
 import '../../Models/listener_data/listener_data.dart';
 class ProfileController extends GetxController{
+  RxList<String> languageId = [""].obs;
+  RxList<bool> selectedLanguages = List.generate(5, (index) => false).obs;
+  var languages = <Language>[
+    Language(id: "1", name: "English"),
+    Language(id: "2", name: "Malayalam"),
+    Language(id: "3", name: "Tamil"),
+    Language(id: "4", name: "Hindi"),
+    // Add more languages as needed
+  ].obs;
+
+
+
+  void selectLanguage(int index) {
+    selectedLanguages[index] = !selectedLanguages[index];
+    if (languageId.contains(index.toString())) {
+      print("remove");
+      languageId.remove(index.toString());
+    } else {
+      print("added");
+      languageId.add(index.toString());
+    }
+
+    update();
+
+    // Concatenate the selected indices into the languageId string
+  }
+  // void toggleSelection(int index) {
+  //   languages[index].isSelected = !languages[index].isSelected;
+  // }
 
   String? delete;
 
@@ -23,9 +52,6 @@ class ProfileController extends GetxController{
        }else{
          print("failed");
        }
-
-
-
      }catch(e){
        return "Error: $e";
      }
@@ -109,7 +135,7 @@ class ProfileController extends GetxController{
   }
   Future<void> uploadImage(File imageFile,String imageUrl) async {
     // Replace 'https://friendlytalks.in/admin/uploads/profile/' with your actual URL
-    var url = Uri.parse('https://friendlytalks.in/admin/uploads/profile/');
+    var url = Uri.parse('https://friendlytalks.in/admin/api/v1/saveFile.php');
 
     // Create a multipart request
     var request = http.MultipartRequest('POST', url);
@@ -130,18 +156,16 @@ class ProfileController extends GetxController{
       print('Failed to upload image. Error: ${response.reasonPhrase}');
     }
   }
-
-
   Future updateLanguages(String languages)async{
-    final apiUrl='https://friendlytalks.in/admin/api/v1/language-add.php?token=c97369129e36336e71096aabf2270aba&user_id=$userId&lang=[%224%22,%223%22,%222%22]';
+    final apiUrl='https://friendlytalks.in/admin/api/v1/language-add.php?token=c97369129e36336e71096aabf2270aba&user_id=$userId&lang=$languages';
 
     try{
-      print(languages);
+      print("hhhsss$languages");
       final response=await http.get(Uri.parse(apiUrl));
       if(response.statusCode==200){
         Map<String,dynamic>data=json.decode(response.body);
-
-        print("Succesfully updated");
+        ListenerData listenerData=ListenerData.fromJson(data);
+        print("Succesfully updatedsdsdfdsdfgfedfgfe");
       }else{
         print("failed");
       }
